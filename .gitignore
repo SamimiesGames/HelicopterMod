@@ -6,4 +6,6 @@ Library/
 Logs/
 Unity/Temp/
 Unity/UserSettings/
+_ModComponent
+_ModComponent.meta
 *.user
