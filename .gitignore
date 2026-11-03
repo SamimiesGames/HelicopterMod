@@ -1,0 +1,8 @@
+DLLs
+\.idea
+\bin
+\obj
+\Unity\Packages
+\Unity\Logs
+\Unity\Library
+*.user
