@@ -5,5 +5,6 @@ DLLs
 Library/
 Logs/
 Unity/Packages/
+Unity/Temp/
 Unity/UserSettings/
 *.user
