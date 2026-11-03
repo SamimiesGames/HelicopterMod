@@ -1,5 +1,6 @@
 ﻿using MelonLoader;
 using Il2Cpp;
+using Console = Il2CppSystem.Console;
 
 namespace HelicopterMod.Main
 {
@@ -9,7 +10,18 @@ namespace HelicopterMod.Main
         {
             base.OnInitializeMelon();
             
-            Logger.Msg("HelicopterMod loading!");
+            Logger.Msg("HelicopterMod loading!"); 
+            
+            uConsole.RegisterCommand("seat_player", new Action(SeatPlayer));
         }
+
+        public void SeatPlayer()
+        {
+            Logger.Msg("Seating player..."); 
+            PlayerManager playerManager = GameManager.GetPlayerManagerComponent();
+            playerManager.SetControlMode(PlayerControlMode.InSeat);
+            Logger.Msg("Seated player?"); 
+        }
+        
     }   
 }
