@@ -2,7 +2,8 @@ DLLs
 \.idea
 \bin
 \obj
-\Unity\Packages
-\Unity\Logs
-\Unity\Library
+Library/
+Logs/
+Unity/Packages/
+Unity/UserSettings/
 *.user
