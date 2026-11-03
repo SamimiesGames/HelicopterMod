@@ -1,7 +1,10 @@
-﻿using MelonLoader;
+﻿using HelicopterMod.Main.Controllers;
+using MelonLoader;
 using Il2Cpp;
 using Il2CppTLD.Interactions;
+using MelonLoader.Utils;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Console = Il2CppSystem.Console;
 
 namespace HelicopterMod.Main
@@ -13,34 +16,33 @@ namespace HelicopterMod.Main
             base.OnInitializeMelon();
             
             Logger.Msg("HelicopterMod loading!"); 
+            AssetBundleUtility.LoadBundle("helicopters", "Mods/helicoptermodassets");
             
-            uConsole.RegisterCommand("seat_player", new Action(SeatPlayer));
+            uConsole.RegisterCommand("spawn_helicopter", new Action(SpawnHelicopter));
         }
 
-        public void SeatPlayer()
+        public void SpawnHelicopter()
         {
             Logger.Msg("Load helicopter");
-            string bundlePath = "Mods/helicoptermodassets";
-            if (File.Exists(bundlePath))
-            {
-                Logger.Msg($"Asset bundle={bundlePath} exists!");
-            }
-            AssetBundle bundle = AssetBundle.LoadFromFile(bundlePath);
-            GameObject prefab = bundle.LoadAsset<GameObject>("VEHICLE_McLeodsUltimatePersonalTransportationMachineA");
+            
+            GameObject prefab = AssetBundleUtility.GetPrefab(
+                "helicopters", 
+                "VEHICLE_McLeodsUltimatePersonalTransportationMachineA"
+            );
             Transform playerTransform = GameManager.GetPlayerTransform();
             
-            GameObject helicopter = GameObject.Instantiate(prefab, playerTransform.position, playerTransform.rotation);
-            
-            Logger.Msg("Seating player..."); 
-            PlayerManager playerManager = GameManager.GetPlayerManagerComponent();
-            playerManager.SetControlMode(PlayerControlMode.InSeat);
-            Logger.Msg("Seated player?");
+            GameObject helicopter = GameObject.Instantiate(prefab, playerTransform.position + Vector3.up * 2, playerTransform.rotation);
             
             Logger.Msg("Seat player in helicopter?"); 
             GameObject seat = helicopter.transform.Find("PlayerEnter").gameObject;
+            
             playerTransform.SetParent(seat.transform);
             playerTransform.localPosition = Vector3.zero;
             playerTransform.localRotation = Quaternion.identity;
+            
+            //seat.AddComponent<Seat>();
+            //seat.AddComponent<PilotFreeLook>();
+            helicopter.AddComponent<HelicopterControls>();
             Logger.Msg("Seated player in helicopter?"); 
         }
         

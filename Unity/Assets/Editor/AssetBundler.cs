@@ -14,7 +14,7 @@ namespace Editor
             Debug.Log($"[AssetBundler] Building Assets");
             BuildPipeline.BuildAssetBundles(
                 directory, 
-                BuildAssetBundleOptions.ChunkBasedCompression, 
+                BuildAssetBundleOptions.None, 
                 BuildTarget.StandaloneWindows64
             );
             Debug.Log($"[AssetBundler] Built assets");
