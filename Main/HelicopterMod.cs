@@ -50,9 +50,8 @@ namespace HelicopterMod.Main
             
             Logger.Msg("Finding objects for rig"); 
             GameObject seat = helicopter.transform.Find("seat0").gameObject;
-            GameObject rotor = helicopter.transform.Find("rotor0").gameObject;
-            
             Logger.Msg($"seat0={seat}");
+            GameObject rotor = helicopter.transform.Find("rotor0").gameObject;
             Logger.Msg($"rotor0={rotor}");
             Logger.Msg("Finding objects for rig ... OK"); 
             

@@ -9,21 +9,10 @@ namespace HelicopterMod.Main
     {
         public GameObject helicopter;
         public Vector2 pitchLimits = new Vector2(-87, 87);
-        public Vector2 yawLimits = new Vector2(-180f, 180f);
+        public Vector2 yawLimits = new Vector2(-1080f, 1080f);
 
-        private void LateUpdate()
+        private void OnEnable()
         {
-            /*
-            if (!GameManager.m_vpFPSPlayer.FPSCamera.m_FreeCameraLookEnabled)
-            {
-                GameManager.m_vpFPSPlayer.FPSCamera.EnableFreeCameraLook(
-                    pitchLimits,
-                    yawLimits
-                );
-            }
-            
-            GameManager.GetPlayerTransform().rotation = helicopter.transform.rotation;
-            */
         }
 
         private void OnDisable()

@@ -14,12 +14,13 @@ namespace HelicopterMod.Main.Controllers
         public Rotor mainRotor;
         
         public float climbRate = 7.5f;
-        public float maximumAcceleration = 14f;
+        public float maximumAcceleration = 21.8f;
         public float optimalAccelerationAngle = 2f;
         public Vector3 angularVelocity;
-        public Vector3 rotationSpeeds = new Vector3(45f, 90f, 45f);
+        public Vector3 rotationSpeeds = new Vector3(90f, 120f, 65f);
         public Vector3 flightControl;
         public Vector3 horizontalVelocity;
+        public Vector3 groundEffect;
         public float pitch;
         public float collective;
 
@@ -53,7 +54,9 @@ namespace HelicopterMod.Main.Controllers
         private void FixedUpdate()
         {
             _deltaDebug += Time.deltaTime;
+            
             _UpdateTrigonometry();
+            _UpdateGroundEffect();
             _UpdateFlightControl();
             _UpdateAcceleration();
             _UpdateRotation();
@@ -69,6 +72,30 @@ namespace HelicopterMod.Main.Controllers
         {
             float fuselagePitch = Vector3.Angle(helicopterRigidbody.transform.forward, rotorUp.up) - 90f;
             pitch = (Vector3.Angle(helicopterRigidbody.transform.forward, Vector3.up) - 90f) - fuselagePitch;
+        }
+
+        private void _UpdateGroundEffect()
+        {
+            // Terrain mask (without Player LayerMask)
+            int layerMask = Utils.m_PhysicalCollisionLayerMask;
+            layerMask &= ~14; // Remove Player
+
+            float rpmPow2 = Mathf.Pow(mainRotor.rpm, 2f);
+
+            if (rpmPow2 < 0.64f) return;
+            
+            Physics.Raycast(
+                helicopterRigidbody.position, 
+                -rotorUp.up, 
+                out RaycastHit hit, 
+                12.7f * rpmPow2,
+                layerMask
+            );
+            
+            float scaledCollective = Mathf.Pow(collective, 1.5f);
+
+            float distanceRatio = Mathf.Pow(1f - Mathf.Clamp01(hit.distance / 12.7f), 1.2f);
+            groundEffect = climbRate * scaledCollective * distanceRatio * hit.normal;
         }
         
         private void _UpdateFlightControl()
@@ -132,7 +159,8 @@ namespace HelicopterMod.Main.Controllers
             
             Vector3 horizontal = forwardRatio * maximumAcceleration * helicopterRigidbody.transform.forward;
             Vector3 vertical = verticalRatio * (climbRate + -Physics.gravity.y) * rotorUp.up;
-
+            vertical += groundEffect;
+            
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, horizontal, .2f * Time.fixedDeltaTime);
             
             if (_deltaDebug > 1f)
