@@ -5,9 +5,8 @@ using UnityEngine;
 namespace HelicopterMod.Main
 {
     [RegisterTypeInIl2Cpp]
-    public class PilotFreeLook : MonoBehaviour
+    public class PilotFreeLook : SeatingAction
     {
-        public GameObject helicopter;
         public Vector2 pitchLimits = new Vector2(-87, 87);
         public Vector2 yawLimits = new Vector2(-190f, 190f);
 
@@ -37,10 +36,16 @@ namespace HelicopterMod.Main
             
             GameManager.m_vpFPSPlayer.FPSCamera.m_Camera.transform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
         }
-
-        private void OnDisable()
+        
+        public override void OnOccupied()
         {
-            if (!Application.isPlaying || !GameManager.m_vpFPSPlayer || !GameManager.m_vpFPSPlayer.FPSCamera) return;
+            GameManager.m_vpFPSPlayer.FPSCamera.enabled = false;
+            enabled = true;
+        }
+
+        public override void OnUnOccupied()
+        {
+            enabled = false;
             GameManager.m_vpFPSPlayer.FPSCamera.m_Camera.transform.localRotation = Quaternion.Euler(0, 0, 0);
             GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;
         }

@@ -10,6 +10,12 @@ namespace HelicopterMod.Main
             Melon<HelicopterMod>.Logger.Msg(message);
         }
         
+        public static void MsgConsole(string message)
+        {
+            uConsole.Log(message);
+            Melon<HelicopterMod>.Logger.Msg(message);
+        }
+        
         public static void Warning(string message)
         {
             uConsole.Log(message);

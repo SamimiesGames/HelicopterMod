@@ -12,6 +12,7 @@ namespace HelicopterMod.Main.Controllers
         public Rigidbody helicopterRigidbody;
         public Transform rotorUp;
         public Rotor mainRotor;
+        public Seat seat;
         
         public float climbRate = 7.5f;
         public float maximumAcceleration = 21.8f;
@@ -62,12 +63,13 @@ namespace HelicopterMod.Main.Controllers
             _UpdateFlightControl();
             _UpdateAcceleration();
             _UpdateRotation();
-            
+            /*
             if (_deltaDebug > 1f)
             {
                 Logger.Msg(ToString());
                 _deltaDebug = 0f;
             }
+            */
         }
         
         private void _UpdateTrigonometry()
@@ -103,6 +105,13 @@ namespace HelicopterMod.Main.Controllers
         private void _UpdateFlightControl()
         {
             flightControl = Vector3.zero;
+
+            if (!seat.occupied)
+            {
+                mainRotor.power = 0f;
+                return;
+            }
+            mainRotor.power = 1f;
             
             if (!Input.GetKey(KeyCode.Mouse1))
             {
@@ -178,7 +187,7 @@ namespace HelicopterMod.Main.Controllers
             }
             
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, horizontal, .2f * Time.fixedDeltaTime);
-            
+            /*
             if (_deltaDebug > 1f)
             {
                 string fwdSuffix = backwards ? " (backwards)" : "";
@@ -190,6 +199,7 @@ namespace HelicopterMod.Main.Controllers
                     $"SCL: {(scaledCollective * 100f)}%\n"
                 );
             }
+            */
             
             helicopterRigidbody.AddForce((vertical + horizontalVelocity) * helicopterRigidbody.mass, ForceMode.Force);
         }

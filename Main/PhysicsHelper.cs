@@ -8,6 +8,11 @@ namespace HelicopterMod.Main
         {
             if (other == null) return;
             if (other.name == "PlayerEnter") return;
+            if (other.name.Contains("interaction"))
+            {
+                Logger.Msg($"[PhysicsHelper.SetLayer] Skipped interaction={other.name}");
+                return;
+            }
             
             if(other.GetComponent<Collider>()) other.layer = layer;
             
