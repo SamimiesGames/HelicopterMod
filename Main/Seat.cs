@@ -11,18 +11,12 @@ namespace HelicopterMod.Main
         private void OnEnable()
         {
             PlayerManager playerManager = GameManager.GetPlayerManagerComponent();
-            playerManager.SetControlMode(PlayerControlMode.InVehicle);
+            playerManager.SetControlMode(PlayerControlMode.Locked);
             GameManager.m_vpFPSPlayer.Controller.enabled = false;
+            GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
             
             Transform playerTransform = GameManager.GetPlayerTransform();
             playerTransform.transform.position = transform.position;
-            playerTransform.transform.rotation = transform.rotation;
-        }
-
-        private void Update()
-        { 
-            Transform playerTransform = GameManager.GetPlayerTransform();
-            
             playerTransform.transform.rotation = transform.rotation;
         }
 
@@ -31,6 +25,7 @@ namespace HelicopterMod.Main
             PlayerManager playerManager = GameManager.GetPlayerManagerComponent();
             playerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.Controller.enabled = true;
+            GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
         }
     }    
 }

@@ -53,6 +53,12 @@ namespace HelicopterMod.Main
             Logger.Msg($"seat0={seat}");
             GameObject rotor = helicopter.transform.Find("rotor0").gameObject;
             Logger.Msg($"rotor0={rotor}");
+            GameObject tachometer0 = helicopter.transform.Find("tachometer0").gameObject;
+            Logger.Msg($"tachometer0={tachometer0}");
+            GameObject tachometer1 = helicopter.transform.Find("tachometer1").gameObject;
+            Logger.Msg($"tachometer1={tachometer1}");
+            GameObject tachometer2 = helicopter.transform.Find("tachometer2").gameObject;
+            Logger.Msg($"tachometer2={tachometer2}");
             Logger.Msg("Finding objects for rig ... OK"); 
             
             Logger.Msg($"Seat player");
@@ -82,6 +88,14 @@ namespace HelicopterMod.Main
             
             controls.mainRotor = mainRotor;
             Logger.Msg($"Adding Rotor ... OK");
+            
+            Logger.Msg($"Adding Instruments");
+            HelicopterInstruments instruments = helicopter.AddComponent<HelicopterInstruments>();
+            instruments.helicopterControls = controls;
+            instruments.liftTachometer = tachometer0.AddComponent<Tachometer>();
+            instruments.climbRateTachometer = tachometer1.AddComponent<Tachometer>();
+            instruments.airSpeedTachometer = tachometer2.AddComponent<Tachometer>();
+            Logger.Msg($"Adding Instruments ... OK");
             
             Logger.Msg($"IgnoreCollisions");
             PhysicsHelper.IgnoreCollisions(helicopter, playerTransform.gameObject);

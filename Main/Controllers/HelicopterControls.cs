@@ -24,6 +24,8 @@ namespace HelicopterMod.Main.Controllers
         public float pitch;
         public float collective;
 
+        public float effectiveLift;
+
         private float _deltaDebug;
 
         public override string ToString()
@@ -70,8 +72,8 @@ namespace HelicopterMod.Main.Controllers
         
         private void _UpdateTrigonometry()
         {
-            float fuselagePitch = Vector3.Angle(helicopterRigidbody.transform.forward, rotorUp.up) - 90f;
-            pitch = (Vector3.Angle(helicopterRigidbody.transform.forward, Vector3.up) - 90f) - fuselagePitch;
+            //float fuselagePitch = Vector3.Angle(helicopterRigidbody.transform.forward, rotorUp.up) - 90f;
+            pitch = (Vector3.Angle(helicopterRigidbody.transform.forward, Vector3.up) - 90f);
         }
 
         private void _UpdateGroundEffect()
@@ -101,13 +103,16 @@ namespace HelicopterMod.Main.Controllers
         private void _UpdateFlightControl()
         {
             flightControl = Vector3.zero;
-            /*
-            float xAxis = Input.GetAxis("Mouse X");
-            float yAxis = Input.GetAxis("Mouse Y");
+            
+            if (!Input.GetKey(KeyCode.Mouse1))
+            {
+                float xAxis = Input.GetAxis("Mouse X");
+                float yAxis = -Input.GetAxis("Mouse Y");
 
-            flightControl.x = yAxis;
-            flightControl.y = xAxis;
-            */
+                flightControl.x = yAxis;
+                flightControl.y = xAxis;
+            }
+            
             if (Input.GetKey(KeyCode.Q))
             {
                 flightControl.y += -1;
@@ -149,25 +154,38 @@ namespace HelicopterMod.Main.Controllers
         
         private void _UpdateAcceleration()
         {
+            float rpmPow2 = Mathf.Pow(mainRotor.rpm, 2f);
             float pitchRatio = Mathf.Clamp(pitch / optimalAccelerationAngle, -1f, 1f);
-            pitchRatio *= Mathf.Pow(mainRotor.rpm, 2f);
+            pitchRatio *= rpmPow2;
             
             float scaledCollective = Mathf.Pow(collective, 1.5f);
+
+            effectiveLift = scaledCollective * rpmPow2;
             
-            float verticalRatio = Mathf.Clamp(1f - pitchRatio, .75f, 1f) * scaledCollective;
+            float verticalRatio = Mathf.Clamp(1f - pitchRatio, .7f, 1f) * scaledCollective;
             float forwardRatio = pitchRatio * Mathf.Clamp(scaledCollective, .5f, 1f);
+            
             
             Vector3 horizontal = forwardRatio * maximumAcceleration * helicopterRigidbody.transform.forward;
             Vector3 vertical = verticalRatio * (climbRate + -Physics.gravity.y) * rotorUp.up;
             vertical += groundEffect;
+
+            // Flying backwards, reduce acceleration. More momentum. Better feel.
+            bool backwards = Vector3.Dot(horizontal.normalized, helicopterRigidbody.velocity.normalized) < 0;
+            if (backwards)
+            {
+                horizontal = forwardRatio * (maximumAcceleration * 0.4f) * helicopterRigidbody.transform.forward;
+            }
             
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, horizontal, .2f * Time.fixedDeltaTime);
             
             if (_deltaDebug > 1f)
             {
+                string fwdSuffix = backwards ? " (backwards)" : "";
                 Logger.Msg(
-                    $"\nFWD: {horizontalVelocity} @ {(forwardRatio * 100f)}%\n" +
+                    $"\nFWD{fwdSuffix}: {horizontalVelocity} @ {(forwardRatio * 100f)}%\n" +
                     $"VER: {vertical} @ {(verticalRatio * 100f)}%\n" +
+                    $"GND: {groundEffect}\n" +
                     $"P: {(pitchRatio * 100f)}%\n" +
                     $"SCL: {(scaledCollective * 100f)}%\n"
                 );
