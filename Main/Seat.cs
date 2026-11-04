@@ -1,6 +1,8 @@
 ﻿using Il2Cpp;
+using Il2CppTLD.Interactions;
 using MelonLoader;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HelicopterMod.Main
 {
@@ -10,12 +12,32 @@ namespace HelicopterMod.Main
         public bool occupied;
         public List<SeatingAction> SeatingComponents;
         
-        public void Enter()
+        private PlayerManager PlayerManager
         {
-            occupied = true;
+            get
+            {
+                if (!_playerManager) _playerManager = GameManager.GetPlayerManagerComponent();
+                return _playerManager;
+            }
+        }
+
+        protected PlayerManager _playerManager;
+        
+        public void Enter(VehicleDoor door)
+        {
+            if (occupied)
+            {
+                Exit(door);
+                return;
+            }
             
-            PlayerManager playerManager = GameManager.GetPlayerManagerComponent();
-            playerManager.SetControlMode(PlayerControlMode.Locked);
+            occupied = true;
+            door.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => Exit(door)));
+
+            
+            Logger.Msg($"[Seat] Entered!");
+            
+            PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
             GameManager.m_vpFPSPlayer.Controller.enabled = false;
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
             
@@ -30,24 +52,37 @@ namespace HelicopterMod.Main
             
             foreach (var seatingAction in SeatingComponents)
             {
+                Logger.Msg($"[Seat] seatingAction={seatingAction.name}.OnOccupied");
                 seatingAction.OnOccupied();
             }
         }
 
-        public void Exit()
+        private void Update()
+        {
+            if (!occupied) return;
+            
+            // Hopefully, override VehicleDoor's behaviour.
+            PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
+            GameManager.m_vpFPSPlayer.Controller.enabled = false;
+            GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
+        }
+
+        public void Exit(VehicleDoor door)
         {
             occupied = false;
-            PlayerManager playerManager = GameManager.GetPlayerManagerComponent();
-            
+            door.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => Enter(door)));
+
+            Logger.Msg($"[Seat] Exited!");
             Transform playerTransform = GameManager.GetPlayerTransform();
             playerTransform.SetParent(null);
             
-            playerManager.SetControlMode(PlayerControlMode.Normal);
+            PlayerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.Controller.enabled = true;
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
 
             foreach (var seatingAction in SeatingComponents)
             {
+                Logger.Msg($"[Seat] seatingAction={seatingAction.name}.OnUnOccupied");
                 seatingAction.OnUnOccupied();
             }
         }

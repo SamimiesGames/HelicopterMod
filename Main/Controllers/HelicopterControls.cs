@@ -1,8 +1,6 @@
 ﻿using Il2Cpp;
-using Il2CppSystem.Numerics;
 using MelonLoader;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace HelicopterMod.Main.Controllers
 {
@@ -18,8 +16,9 @@ namespace HelicopterMod.Main.Controllers
         public float maximumAcceleration = 21.8f;
         public float optimalAccelerationAngle = 2f;
         public Vector3 angularVelocity;
-        public Vector3 rotationSpeeds = new Vector3(90f, 120f, 65f);
+        public Vector3 rotationSpeeds = new Vector3(180f, 230f, 210f);
         public Vector3 flightControl;
+        public Vector3 currentFlightControl;
         public Vector3 horizontalVelocity;
         public Vector3 groundEffect;
         public float pitch;
@@ -150,11 +149,11 @@ namespace HelicopterMod.Main.Controllers
             // Collective
             if (Input.GetKey(KeyCode.W))
             {
-                collective += 2f * Time.fixedDeltaTime;
+                collective += 0.5f * Time.fixedDeltaTime;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                collective += -2f * Time.fixedDeltaTime;
+                collective += -0.5f * Time.fixedDeltaTime;
             }
             collective = Mathf.Clamp01(collective);
             
@@ -206,17 +205,15 @@ namespace HelicopterMod.Main.Controllers
 
         private void _UpdateRotation()
         {
+            // Smooth inputs
+            currentFlightControl = Vector3.Lerp(currentFlightControl, flightControl, 3.6f * Time.fixedDeltaTime);
             // Accumulate axis for angular velocity 
-            Vector3 targetAngularVelocity =
-                rotationSpeeds.x * Mathf.Deg2Rad * flightControl.x * transform.right +
-                rotationSpeeds.y * Mathf.Deg2Rad * flightControl.y * transform.up +
-                rotationSpeeds.z * Mathf.Deg2Rad * flightControl.z * transform.forward;
+            Vector3 newAngularVelocity =
+                rotationSpeeds.x * Mathf.Deg2Rad * currentFlightControl.x * transform.right +
+                rotationSpeeds.y * Mathf.Deg2Rad * currentFlightControl.y * transform.up +
+                rotationSpeeds.z * Mathf.Deg2Rad * currentFlightControl.z * transform.forward;
             
-            angularVelocity = Vector3.MoveTowards(
-                angularVelocity, 
-                targetAngularVelocity,
-                45f * Time.fixedDeltaTime
-            );
+            angularVelocity = Vector3.Lerp(angularVelocity, newAngularVelocity, 20f * Time.fixedDeltaTime);
             angularVelocity *= 1f - .5f * Time.fixedDeltaTime;
             
             Vector3 direction = angularVelocity - helicopterRigidbody.angularVelocity;

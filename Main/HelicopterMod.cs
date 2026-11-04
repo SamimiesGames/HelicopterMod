@@ -63,7 +63,7 @@ namespace HelicopterMod.Main
             GameObject tachometer2 = helicopter.transform.Find("tachometer2").gameObject;
             Logger.Msg($"tachometer2={tachometer2}");
             enterInteraction = helicopter.transform.Find("interaction_enter").gameObject;
-            Logger.Msg($"tachometer2={tachometer2}");
+            Logger.Msg($"enterInteraction={enterInteraction}");
             Logger.Msg("Finding objects for rig ... OK"); 
             
             Logger.Msg($"Adding Seat");
@@ -101,10 +101,8 @@ namespace HelicopterMod.Main
             Logger.Msg($"Adding VehicleDoor(enter)");
             
             VehicleDoor interaction = enterInteraction.AddComponent<VehicleDoor>();
-            interaction.HoldTime = 1.5f;
-            interaction.HoverText = "McLeod's Ultimate Personal Transportation Machine";
-            interaction.HoldText = "Enter";
-            interaction.AddEventCallback(InteractionEventType.HoldEnd, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => seat.Enter()));
+            interaction.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => seat.Enter(interaction)));
+            
             enterInteraction.layer = LayerMask.NameToLayer("InteractivePropNoCollidePlayer");
             
             Logger.Msg($"Adding VehicleDoor(enter) ... OK");
