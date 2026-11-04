@@ -1,40 +1,175 @@
 ﻿using Il2Cpp;
+using Il2CppSystem.Numerics;
 using MelonLoader;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace HelicopterMod.Main.Controllers
 {
     [RegisterTypeInIl2Cpp]
     public class HelicopterControls : MonoBehaviour
     {
-        public Rigidbody HelicopterRigidbody;
+        public Rigidbody helicopterRigidbody;
+        public Transform rotorUp;
+        public Rotor mainRotor;
         
+        public float climbRate = 7.5f;
+        public float maximumAcceleration = 14f;
+        public float optimalAccelerationAngle = 2f;
+        public Vector3 angularVelocity;
+        public Vector3 rotationSpeeds = new Vector3(45f, 90f, 45f);
+        public Vector3 flightControl;
+        public Vector3 horizontalVelocity;
+        public float pitch;
+        public float collective;
+
+        private float _deltaDebug;
+
+        public override string ToString()
+        {
+            return $"HELICOPTER STATE:\n" +
+                   $"RPM: {Mathf.RoundToInt(mainRotor.rpm * 400f)}\n" +
+                   $"COL: {Mathf.CeilToInt(collective * 100f)}\n " +
+                   $"SPD: {(helicopterRigidbody.velocity.magnitude * 3.6f).ToString("F1")}km/h\n" +
+                   $"CLM: {helicopterRigidbody.velocity.y.ToString("F1")}m/s\n" +
+                   $"X: {pitch.ToString("F1")}deg\n" +
+                   $"optimalAccelerationAngle: {optimalAccelerationAngle}\n" +
+                   $"climbRate: {climbRate}\n" +
+                   $"maximumAcceleration: {maximumAcceleration}\n";
+        }
+
         private void Start()
         {
-            HelicopterRigidbody = gameObject.AddComponent<Rigidbody>();
-            HelicopterRigidbody.useGravity = true;
-            HelicopterRigidbody.linearDamping = 0.2f;
-            HelicopterRigidbody.angularDamping = 0.8f;
-            HelicopterRigidbody.mass = 370f;
+            helicopterRigidbody = gameObject.AddComponent<Rigidbody>();
+            helicopterRigidbody.useGravity = true;
+            helicopterRigidbody.linearDamping = 0.7f;
+            helicopterRigidbody.angularDamping = 1.2f;
+            helicopterRigidbody.mass = 370f;
 
             PhysicsHelper.SetLayer(gameObject, 14);
-            HelicopterRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            helicopterRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
         }
 
         private void FixedUpdate()
         {
-            if (Input.GetKey(KeyCode.W))
+            _deltaDebug += Time.deltaTime;
+            _UpdateTrigonometry();
+            _UpdateFlightControl();
+            _UpdateAcceleration();
+            _UpdateRotation();
+            
+            if (_deltaDebug > 1f)
             {
-                HelicopterRigidbody.AddForce(HelicopterRigidbody.mass * 100f * Time.fixedDeltaTime * transform.up);
+                Logger.Msg(ToString());
+                _deltaDebug = 0f;
+            }
+        }
+        
+        private void _UpdateTrigonometry()
+        {
+            float fuselagePitch = Vector3.Angle(helicopterRigidbody.transform.forward, rotorUp.up) - 90f;
+            pitch = (Vector3.Angle(helicopterRigidbody.transform.forward, Vector3.up) - 90f) - fuselagePitch;
+        }
+        
+        private void _UpdateFlightControl()
+        {
+            flightControl = Vector3.zero;
+            /*
+            float xAxis = Input.GetAxis("Mouse X");
+            float yAxis = Input.GetAxis("Mouse Y");
+
+            flightControl.x = yAxis;
+            flightControl.y = xAxis;
+            */
+            if (Input.GetKey(KeyCode.Q))
+            {
+                flightControl.y += -1;
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                flightControl.y += 1;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                HelicopterRigidbody.AddTorque(HelicopterRigidbody.mass * 100f * Time.fixedDeltaTime * Vector3.up);
+                flightControl.z += 1;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                HelicopterRigidbody.AddTorque(HelicopterRigidbody.mass * 100f * Time.fixedDeltaTime * -Vector3.up);
+                flightControl.z += -1;
             }
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                flightControl.x += 1;
+            }
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                flightControl.x += -1;
+            }
+
+            // Collective
+            if (Input.GetKey(KeyCode.W))
+            {
+                collective += 2f * Time.fixedDeltaTime;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                collective += -2f * Time.fixedDeltaTime;
+            }
+            collective = Mathf.Clamp01(collective);
+            
+            flightControl.Normalize();
+        }
+        
+        private void _UpdateAcceleration()
+        {
+            float pitchRatio = Mathf.Clamp(pitch / optimalAccelerationAngle, -1f, 1f);
+            pitchRatio *= Mathf.Pow(mainRotor.rpm, 2f);
+            
+            float scaledCollective = Mathf.Pow(collective, 1.5f);
+            
+            float verticalRatio = Mathf.Clamp(1f - pitchRatio, .75f, 1f) * scaledCollective;
+            float forwardRatio = pitchRatio * Mathf.Clamp(scaledCollective, .5f, 1f);
+            
+            Vector3 horizontal = forwardRatio * maximumAcceleration * helicopterRigidbody.transform.forward;
+            Vector3 vertical = verticalRatio * (climbRate + -Physics.gravity.y) * rotorUp.up;
+
+            horizontalVelocity = Vector3.Lerp(horizontalVelocity, horizontal, .2f * Time.fixedDeltaTime);
+            
+            if (_deltaDebug > 1f)
+            {
+                Logger.Msg(
+                    $"\nFWD: {horizontalVelocity} @ {(forwardRatio * 100f)}%\n" +
+                    $"VER: {vertical} @ {(verticalRatio * 100f)}%\n" +
+                    $"P: {(pitchRatio * 100f)}%\n" +
+                    $"SCL: {(scaledCollective * 100f)}%\n"
+                );
+            }
+            
+            helicopterRigidbody.AddForce((vertical + horizontalVelocity) * helicopterRigidbody.mass, ForceMode.Force);
+        }
+
+        private void _UpdateRotation()
+        {
+            // Accumulate axis for angular velocity 
+            Vector3 targetAngularVelocity =
+                rotationSpeeds.x * Mathf.Deg2Rad * flightControl.x * transform.right +
+                rotationSpeeds.y * Mathf.Deg2Rad * flightControl.y * transform.up +
+                rotationSpeeds.z * Mathf.Deg2Rad * flightControl.z * transform.forward;
+            
+            angularVelocity = Vector3.MoveTowards(
+                angularVelocity, 
+                targetAngularVelocity,
+                45f * Time.fixedDeltaTime
+            );
+            angularVelocity *= 1f - .5f * Time.fixedDeltaTime;
+            
+            Vector3 direction = angularVelocity - helicopterRigidbody.angularVelocity;
+            Vector3 localDirection = Quaternion.Inverse(transform.rotation) * direction;
+
+            Vector3 torque = Vector3.Scale(helicopterRigidbody.inertiaTensor, localDirection);
+            torque = (transform.rotation * torque) / Time.fixedDeltaTime;
+            
+            helicopterRigidbody.AddTorque(torque * Time.fixedDeltaTime, ForceMode.Force);
         }
     }
 }

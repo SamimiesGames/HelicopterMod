@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &798901952509132931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8256258256303942648}
+  m_Layer: 0
+  m_Name: rotor0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8256258256303942648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798901952509132931}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8133713900255565383}
+  m_Father: {fileID: 6571319042393653263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1956463637495482300
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4967448896575917289}
   m_Layer: 0
-  m_Name: PlayerEnter
+  m_Name: seat0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 8043346289487564285}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.089, z: 0.849}
+  m_LocalPosition: {x: 0, y: -0.268, z: 0.849}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -296,8 +328,8 @@ Transform:
   m_Children:
   - {fileID: 2793337927046295780}
   - {fileID: 8234799301116093568}
-  - {fileID: 8133713900255565383}
   - {fileID: 4967448896575917289}
+  - {fileID: 8256258256303942648}
   - {fileID: 7197877336028544863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -313,7 +345,7 @@ GameObject:
   - component: {fileID: 1288052122120603317}
   - component: {fileID: 5887452330085468972}
   m_Layer: 0
-  m_Name: MLUPTM_MainRotor
+  m_Name: MainRotor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,11 +360,11 @@ Transform:
   m_GameObject: {fileID: 9051029121491274164}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45404848, y: -0.5420703, z: -0.5420696, w: -0.45404887}
-  m_LocalPosition: {x: -0.051, y: 1.6406212, z: -0.028204514}
+  m_LocalPosition: {x: 0, y: 1.6406212, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6571319042393653263}
+  m_Father: {fileID: 8256258256303942648}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: -619.9}
 --- !u!33 &1288052122120603317
 MeshFilter:
@@ -341,7 +373,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9051029121491274164}
-  m_Mesh: {fileID: -8990709040325610808, guid: b86d735b7ff15bf4ca53510fca190258, type: 3}
+  m_Mesh: {fileID: 5833812403168932992, guid: b86d735b7ff15bf4ca53510fca190258, type: 3}
 --- !u!23 &5887452330085468972
 MeshRenderer:
   m_ObjectHideFlags: 0
