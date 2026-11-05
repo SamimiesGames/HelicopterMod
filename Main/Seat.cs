@@ -22,31 +22,22 @@ namespace HelicopterMod.Main
         }
 
         protected PlayerManager _playerManager;
-        
-        public void Enter(VehicleDoor door)
+
+        public void Enter()
         {
             if (occupied)
             {
-                Exit(door);
+                Exit();
                 return;
             }
             
-            occupied = true;
-            door.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => Exit(door)));
-
-            
             Logger.Msg($"[Seat] Entered!");
+            occupied = true;
             
             PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
-            GameManager.m_vpFPSPlayer.Controller.enabled = false;
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
             
             Transform playerTransform = GameManager.GetPlayerTransform();
-            
-            playerTransform.SetParent(transform);
-            playerTransform.localPosition = Vector3.zero;
-            playerTransform.localRotation = Quaternion.identity;
-            
             playerTransform.transform.position = transform.position;
             playerTransform.transform.rotation = transform.rotation;
             
@@ -61,23 +52,19 @@ namespace HelicopterMod.Main
         {
             if (!occupied) return;
             
-            // Hopefully, override VehicleDoor's behaviour.
-            PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
-            GameManager.m_vpFPSPlayer.Controller.enabled = false;
-            GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
+            Transform playerTransform = GameManager.GetPlayerTransform();
+            
+            playerTransform.transform.position = transform.position;
+            playerTransform.transform.rotation = transform.rotation;
         }
 
-        public void Exit(VehicleDoor door)
+        public void Exit()
         {
             occupied = false;
-            door.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => Enter(door)));
-
+            
             Logger.Msg($"[Seat] Exited!");
-            Transform playerTransform = GameManager.GetPlayerTransform();
-            playerTransform.SetParent(null);
             
             PlayerManager.SetControlMode(PlayerControlMode.Normal);
-            GameManager.m_vpFPSPlayer.Controller.enabled = true;
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
 
             foreach (var seatingAction in SeatingComponents)
@@ -85,6 +72,13 @@ namespace HelicopterMod.Main
                 Logger.Msg($"[Seat] seatingAction={seatingAction.name}.OnUnOccupied");
                 seatingAction.OnUnOccupied();
             }
+        }
+        
+        private void OnDisable()
+        {
+            Logger.Msg($"[Seat] OnDisable, cleanup");
+            PlayerManager.SetControlMode(PlayerControlMode.Normal);
+            GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;
         }
     }    
 }

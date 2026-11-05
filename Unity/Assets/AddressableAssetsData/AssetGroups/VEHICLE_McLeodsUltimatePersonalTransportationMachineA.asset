@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 874b8abe07dba4349a5dfb90b7672305
+    m_Address: Assets/_ModComponent/HelicopterMod/HelicopterMod.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0cc324e03533aa74192dfa535b38952e, type: 2}
   m_SchemaSet:

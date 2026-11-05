@@ -506,7 +506,6 @@ GameObject:
   - component: {fileID: 35787649480853394}
   - component: {fileID: 4491140827767815430}
   - component: {fileID: 5942990694425340102}
-  - component: {fileID: 6773293130242846382}
   m_Layer: 0
   m_Name: interaction_enter
   m_TagString: Untagged
@@ -603,27 +602,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.22597125, y: 0.68462914, z: 0.2643381}
   m_Center: {x: 0.26141316, y: 0.15768373, z: 0.36783093}
---- !u!65 &6773293130242846382
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2218318717405066541}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.31, y: 0.37, z: 0.55}
-  m_Center: {x: 0.6, y: -0.12, z: 1.3}
 --- !u!1 &2288157552396131101
 GameObject:
   m_ObjectHideFlags: 0

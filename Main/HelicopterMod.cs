@@ -13,6 +13,7 @@ namespace HelicopterMod.Main
     {
         public GameObject helicopter;
         public GameObject enterInteraction;
+        public Seat seat;
         
         public override void OnInitializeMelon()
         {
@@ -23,7 +24,8 @@ namespace HelicopterMod.Main
             
             uConsole.RegisterCommand("spawn_helicopter", new Action(SpawnHelicopter));
             uConsole.RegisterCommand("unstuck_heli", new Action(UnstuckHelicopter));
-            uConsole.RegisterCommand("layer_set", new Action(SetLayerOfInteraction));
+            uConsole.RegisterCommand("getout", new Action(GetOutOfHelicopter));
+            uConsole.RegisterCommand("switch_scene", new Action(SwitchScene));
         }
 
         public void UnstuckHelicopter()
@@ -67,7 +69,7 @@ namespace HelicopterMod.Main
             Logger.Msg("Finding objects for rig ... OK"); 
             
             Logger.Msg($"Adding Seat");
-            Seat seat = seat0.AddComponent<Seat>();
+            seat = seat0.AddComponent<Seat>();
             seat.SeatingComponents = new List<SeatingAction>();
             Logger.Msg($"Adding Seat ... OK");
             Logger.Msg($"Adding PilotFreeLook");
@@ -98,14 +100,15 @@ namespace HelicopterMod.Main
             instruments.airSpeedTachometer = tachometer2.AddComponent<Tachometer>();
             Logger.Msg($"Adding Instruments ... OK");
             
-            Logger.Msg($"Adding VehicleDoor(enter)");
+            Logger.Msg($"Adding BaseInteraction(enter)");
             
-            VehicleDoor interaction = enterInteraction.AddComponent<VehicleDoor>();
-            interaction.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => seat.Enter(interaction)));
+            SimpleInteraction interaction = enterInteraction.AddComponent<SimpleInteraction>();
+            interaction.HoverText = "McLeod's Ultimate Personal Transportation Machine";
+            interaction.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => seat.Enter()));
             
             enterInteraction.layer = LayerMask.NameToLayer("InteractivePropNoCollidePlayer");
             
-            Logger.Msg($"Adding VehicleDoor(enter) ... OK");
+            Logger.Msg($"Adding BaseInteraction(enter) ... OK");
             
             Logger.Msg($"IgnoreCollisions");
             PhysicsHelper.IgnoreCollisions(helicopter, playerTransform.gameObject);
@@ -114,24 +117,28 @@ namespace HelicopterMod.Main
             Logger.Msg("COMPLETE"); 
         }
 
-        public void SetLayerOfInteraction()
+        public void GetOutOfHelicopter()
         {
             if (!helicopter)
             {
                 Logger.Warning("No helicopter!");
                 return;
             }
-
+            
+            Logger.Msg($"GetOutOfHelicopter");
+            seat.Exit();
+            Logger.Msg($"GetOutOfHelicopter ... OK");
+        }
+        
+        public void SwitchScene()
+        {
             if (uConsole.GetNumParameters() <= 0)
             {
-                Logger.Warning("set_layer usage: set_layer <string: layerName>");
+                Logger.Warning("switch_scene usage: switch_scene <string: sceneName>");
                 return;
             }
             
-            string layerName = uConsole.GetString();
-            LayerMask layerMask = LayerMask.NameToLayer(layerName);
-            enterInteraction.layer = layerMask;
-            Logger.MsgConsole($"[SetLayerOfInteraction] to {layerName} -> {(int)layerMask}");
+            GameManager.LoadSceneAsynchronously(uConsole.GetString());
         }
     }   
 }

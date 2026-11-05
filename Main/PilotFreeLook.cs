@@ -49,5 +49,12 @@ namespace HelicopterMod.Main
             GameManager.m_vpFPSPlayer.FPSCamera.m_Camera.transform.localRotation = Quaternion.Euler(0, 0, 0);
             GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;
         }
+
+        private void OnDisable()
+        {
+            Logger.Msg($"[PilotFreeLook] OnDisable, cleanup");
+            GameManager.m_vpFPSPlayer.FPSCamera.m_Camera.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;
+        }
     }
 }
