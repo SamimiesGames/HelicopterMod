@@ -142,5 +142,16 @@ namespace HelicopterMod.Main
             loadScene.m_SceneToLoad = uConsole.GetString();
             loadScene.PerformSceneLoad();
         }
-    }   
+    }
+
+    public static class HelicopterModState
+    {
+        public static HelicopterModTransitionState TransitionState;
+    }
+
+    public enum HelicopterModTransitionState
+    {
+        OnFoot,
+        InHelicopter
+    }
 }

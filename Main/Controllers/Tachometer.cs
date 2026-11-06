@@ -9,11 +9,11 @@ namespace HelicopterMod.Main.Controllers
         public Vector2 angles = new Vector2(-160, 160);
         public float value;
 
-        private Vector3 homeEuler;
+        private Quaternion homeRotation;
 
         private void Awake()
         {
-            homeEuler = transform.eulerAngles;
+            homeRotation = transform.localRotation;
         }
 
         private void Update()
@@ -28,7 +28,7 @@ namespace HelicopterMod.Main.Controllers
             if (angle > 180f) angle -= 360f;
             if (angle < -180f) angle += 360f;
             
-            transform.localRotation = Quaternion.Euler(homeEuler + Vector3.forward * angle);
+            transform.localRotation = homeRotation * Quaternion.Euler(Vector3.forward * angle);
         }
     }
 }

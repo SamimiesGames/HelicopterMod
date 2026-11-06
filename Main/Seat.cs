@@ -31,8 +31,15 @@ namespace HelicopterMod.Main
                 return;
             }
             
+            if (PlayerManager.GetControlMode() != PlayerControlMode.Normal)
+            {
+                Logger.Msg($"[Seat] Cannot enter while performing an action!");
+                return;
+            }
+            
             Logger.Msg($"[Seat] Entered!");
             occupied = true;
+            HelicopterModState.TransitionState = HelicopterModTransitionState.InHelicopter;
             
             PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
@@ -60,9 +67,9 @@ namespace HelicopterMod.Main
 
         public void Exit()
         {
-            occupied = false;
-            
             Logger.Msg($"[Seat] Exited!");
+            occupied = false;
+            HelicopterModState.TransitionState = HelicopterModTransitionState.OnFoot;
             
             PlayerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
