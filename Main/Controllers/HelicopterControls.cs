@@ -157,7 +157,7 @@ namespace HelicopterMod.Main.Controllers
             // Retreating blade stall. (Roll helicopter when over speeding.)
             float rbs = (speed / (retreatingBladeStallSpeed / 3.6f)) - 1;
             
-            rbs = Mathf.Clamp(rbs, 0f, 1f) / .09f;
+            rbs = Mathf.Clamp(rbs, 0f, 1f) / .29f;
             rbs = Mathf.Clamp(rbs, 0f, 2f);
             
             float retreatingBladeStall = rotationSpeeds.z * rbs;
@@ -167,7 +167,7 @@ namespace HelicopterMod.Main.Controllers
             float yawInDegrees = Vector3.Dot(helicopterRigidbody.angularVelocity, transform.up) * Mathf.Rad2Deg;
 
             float yawRatio = Mathf.Clamp(Mathf.Abs(yawInDegrees) / rotationSpeeds.y, 0f, 1.5f);
-            float rollDueToYaw = yawRatio * rotationSpeeds.z * 3f * Mathf.Sign(yawInDegrees);
+            float rollDueToYaw = yawRatio * rotationSpeeds.z * 3f * dutchRollWeight * Mathf.Sign(yawInDegrees);
             
             newSumOfAeroDynamicForces.z += rollDueToYaw;
 
