@@ -137,9 +137,10 @@ namespace HelicopterMod.Main
                 Logger.Warning("switch_scene usage: switch_scene <string: sceneName>");
                 return;
             }
-            
-            GameManager.SaveGame();
-            GameManager.LoadSceneAsynchronously(uConsole.GetString());
+
+            LoadScene loadScene = new GameObject("LoadScene").AddComponent<LoadScene>();
+            loadScene.m_SceneToLoad = uConsole.GetString();
+            loadScene.PerformSceneLoad();
         }
     }   
 }
