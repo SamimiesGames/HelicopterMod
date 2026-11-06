@@ -138,6 +138,7 @@ namespace HelicopterMod.Main
                 return;
             }
             
+            GameManager.SaveGame();
             GameManager.LoadSceneAsynchronously(uConsole.GetString());
         }
     }   

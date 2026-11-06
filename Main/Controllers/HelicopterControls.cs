@@ -4,6 +4,27 @@ using UnityEngine;
 
 namespace HelicopterMod.Main.Controllers
 {
+    [Serializable]
+    public class HelicopterControlsParameters
+    {
+        public float climbRate = 7.5f;
+        public float maximumAcceleration = 21.8f;
+        public float optimalAccelerationAngle = 2f;
+        public Vector3 rotationSpeeds = new Vector3(180f, 230f, 210f);
+    }
+    
+    [Serializable]
+    public class HelicopterControlsData
+    {
+        public Vector3 angularVelocity;
+        public Vector3 flightControl;
+        public Vector3 currentFlightControl;
+        public Vector3 horizontalVelocity;
+        public Vector3 groundEffect;
+        public float pitch;
+        public float collective;
+    }
+    
     [RegisterTypeInIl2Cpp]
     public class HelicopterControls : MonoBehaviour
     {
@@ -11,12 +32,15 @@ namespace HelicopterMod.Main.Controllers
         public Transform rotorUp;
         public Rotor mainRotor;
         public Seat seat;
-        
+
+        public HelicopterControlsParameters parameters;
+        public HelicopterControlsData data;
         public float climbRate = 7.5f;
         public float maximumAcceleration = 21.8f;
+        public float transverseFlow = 21f;
         public float optimalAccelerationAngle = 2f;
-        public Vector3 angularVelocity;
         public Vector3 rotationSpeeds = new Vector3(180f, 230f, 210f);
+        public Vector3 angularVelocity;
         public Vector3 flightControl;
         public Vector3 currentFlightControl;
         public Vector3 horizontalVelocity;
@@ -98,7 +122,12 @@ namespace HelicopterMod.Main.Controllers
             float scaledCollective = Mathf.Pow(collective, 1.5f);
 
             float distanceRatio = Mathf.Pow(1f - Mathf.Clamp01(hit.distance / 12.7f), 1.2f);
-            groundEffect = climbRate * scaledCollective * distanceRatio * hit.normal;
+            
+            Vector3 normal = hit.normal;
+            normal.y = Mathf.Abs(normal.y);
+            normal.Normalize();
+            
+            groundEffect = climbRate * scaledCollective * distanceRatio * normal;
         }
         
         private void _UpdateFlightControl()
@@ -173,7 +202,6 @@ namespace HelicopterMod.Main.Controllers
             float verticalRatio = Mathf.Clamp(1f - pitchRatio, .7f, 1f) * scaledCollective;
             float forwardRatio = pitchRatio * Mathf.Clamp(scaledCollective, .5f, 1f);
             
-            
             Vector3 horizontal = forwardRatio * maximumAcceleration * helicopterRigidbody.transform.forward;
             Vector3 vertical = verticalRatio * (climbRate + -Physics.gravity.y) * rotorUp.up;
             vertical += groundEffect;
@@ -198,15 +226,23 @@ namespace HelicopterMod.Main.Controllers
                     $"SCL: {(scaledCollective * 100f)}%\n"
                 );
             }
-            */
             
-            helicopterRigidbody.AddForce((vertical + horizontalVelocity) * helicopterRigidbody.mass, ForceMode.Force);
+            */
+
+            bool inTransverseFlow = helicopterRigidbody.velocity.magnitude * 3.6f < transverseFlow;
+            helicopterRigidbody.linearDamping = inTransverseFlow ? 1.4f : 0.7f;
+            
+            Vector3 velocity = vertical + horizontalVelocity;
+            Vector3 force = velocity * helicopterRigidbody.mass;
+            
+            helicopterRigidbody.AddForce(force, ForceMode.Force);
         }
 
         private void _UpdateRotation()
         {
             // Smooth inputs
             currentFlightControl = Vector3.Lerp(currentFlightControl, flightControl, 3.6f * Time.fixedDeltaTime);
+            
             // Accumulate axis for angular velocity 
             Vector3 newAngularVelocity =
                 rotationSpeeds.x * Mathf.Deg2Rad * currentFlightControl.x * transform.right +
