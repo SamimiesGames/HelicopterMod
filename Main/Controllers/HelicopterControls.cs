@@ -157,7 +157,7 @@ namespace HelicopterMod.Main.Controllers
             // Retreating blade stall. (Roll helicopter when over speeding.)
             float rbs = (speed / (retreatingBladeStallSpeed / 3.6f)) - 1;
             
-            rbs = Mathf.Clamp(rbs, 0f, 1f) / .29f;
+            rbs = Mathf.Clamp(rbs, 0f, 1f) / .25f;
             rbs = Mathf.Clamp(rbs, 0f, 2f);
             
             float retreatingBladeStall = rotationSpeeds.z * rbs;
@@ -281,7 +281,7 @@ namespace HelicopterMod.Main.Controllers
                     $"\nFWD{fwdSuffix}: {horizontalVelocity} @ {(forwardRatio * 100f)}%\n" +
                     $"VER: {vertical} @ {(verticalRatio * 100f)}%\n" +
                     $"GND: {groundEffect}\n" +
-                    $"LFT: {(effectiveLift * 100f)}%\n" +
+                    $"LFT: {effectiveLift * 100f}%\n" +
                     $"AIR: {sumOfAerodynamicFactors}\n"
                 );
             }

@@ -58,6 +58,13 @@ namespace HelicopterMod.Main
         private void Update()
         {
             if (!occupied) return;
+
+            PlayerStruggle struggle = GameManager.GetPlayerStruggleComponent();
+            if (struggle && struggle.InStruggle())
+            {
+                Exit();
+                return;
+            }
             
             Transform playerTransform = GameManager.GetPlayerTransform();
             
@@ -70,10 +77,10 @@ namespace HelicopterMod.Main
             Logger.Msg($"[Seat] Exited!");
             occupied = false;
             HelicopterModState.TransitionState = HelicopterModTransitionState.OnFoot;
-            
+
             PlayerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
-
+            
             foreach (var seatingAction in SeatingComponents)
             {
                 Logger.Msg($"[Seat] seatingAction={seatingAction.name}.OnUnOccupied");
