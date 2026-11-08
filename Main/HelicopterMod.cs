@@ -134,6 +134,7 @@ namespace HelicopterMod.Main
             Logger.Msg($"GetOutOfHelicopter ... OK");
         }
         
+
         public void SwitchScene()
         {
             if (uConsole.GetNumParameters() <= 0)
@@ -142,20 +143,31 @@ namespace HelicopterMod.Main
                 return;
             }
 
-            LoadScene loadScene = new GameObject("LoadScene").AddComponent<LoadScene>();
-            loadScene.m_SceneToLoad = uConsole.GetString();
+            string sceneName = uConsole.GetString();
+            GameObject loadSceneGo = new GameObject("LoadScene");
+            loadSceneGo.layer = LayerMask.NameToLayer("Trigger");
+
+            BoxCollider collider = loadSceneGo.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+            collider.size = Vector3.one * 3f;
+            
+            LoadScene loadScene = loadSceneGo.AddComponent<LoadScene>();
+            loadScene.m_SceneToLoad = sceneName;
             loadScene.m_Active = true;
+            loadScene.m_ExitPointName = "DefaultSpawnPoint";
+            loadScene.m_TransitionOnContact = true;
             loadScene.CanInteract = true;
-            loadScene.Awake();
-            loadScene.Start();
-            loadScene.Update();
-            loadScene.PerformSceneLoad();
+            
+            loadScene.transform.SetParent(ManagerCache.PlayerTransform);
+            loadScene.transform.localPosition = Vector3.zero;
+            loadScene.transform.localRotation = Quaternion.identity;
         }
     }
 
     public static class HelicopterModState
     {
         public static HelicopterModTransitionState TransitionState;
+        public static string WaitingOnScene;
     }
 
     public enum HelicopterModTransitionState

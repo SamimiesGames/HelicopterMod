@@ -19,7 +19,7 @@ internal static class BuildInfo
     internal const string ModName = "HelicopterMod";
     internal const string ModAuthor = "Samimies";
 
-    internal const string ModVersion = "0.0.1";
+    internal const string ModVersion = "0.0.2";
 
     internal const string ModAssemblyConfiguration = "Debug";
 }   

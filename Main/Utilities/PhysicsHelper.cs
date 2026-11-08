@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace HelicopterMod.Main
+namespace HelicopterMod.Main.Utilities
 {
     public struct PhysicsHelper
     {

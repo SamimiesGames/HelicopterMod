@@ -1,4 +1,5 @@
-﻿using Il2Cpp;
+﻿using HelicopterMod.Main.Utilities;
+using Il2Cpp;
 using MelonLoader;
 using UnityEngine;
 
@@ -138,7 +139,7 @@ namespace HelicopterMod.Main.Controllers
 
         private void _UpdateAeroDynamics()
         {
-            Vector3 newSumOfAeroDynamicForces = Vector3.zero;
+            Vector3 newSumOfAeroDynamicFactors = Vector3.zero;
             
             float speed = helicopterRigidbody.linearVelocity.magnitude;
             Vector3 heading = helicopterRigidbody.linearVelocity.normalized;
@@ -147,12 +148,12 @@ namespace HelicopterMod.Main.Controllers
             bool sameDirection = Vector3.Dot(heading, forward) >= 0;
             if (!sameDirection) forward = -forward;
             
-            // Face fuselage towards incoming wind. (Dutch roll)
-            float phase = Mathf.Clamp(Vector3.SignedAngle(forward, heading, transform.up) / 45f, -1f, 1f);
+            // Face fuselage towards velocity. (Dutch roll)
+            float yawToHeading = Mathf.Clamp(Vector3.SignedAngle(forward, heading, transform.up) / 90f, -1f, 1f);
 
             float dutchRollWeight = Mathf.Clamp(Mathf.Pow(speed / dutchSpeed, 2f), 0f, 2f) / 2f;
-            float dutchRoll = rotationSpeeds.y * 2f * phase * dutchRollWeight;
-            newSumOfAeroDynamicForces.y = dutchRoll;
+            float dutchRoll = rotationSpeeds.y * 2f * yawToHeading * dutchRollWeight;
+            newSumOfAeroDynamicFactors.y = dutchRoll;
 
             // Retreating blade stall. (Roll helicopter when over speeding.)
             float rbs = (speed / (retreatingBladeStallSpeed / 3.6f)) - 1;
@@ -161,7 +162,7 @@ namespace HelicopterMod.Main.Controllers
             rbs = Mathf.Clamp(rbs, 0f, 2f);
             
             float retreatingBladeStall = rotationSpeeds.z * rbs;
-            newSumOfAeroDynamicForces.z = retreatingBladeStall;
+            newSumOfAeroDynamicFactors.z = retreatingBladeStall;
 
             // Roll-due-to-yaw / sympathetic roll. Roll the helicopter to the opposite side of the yaw.
             float yawInDegrees = Vector3.Dot(helicopterRigidbody.angularVelocity, transform.up) * Mathf.Rad2Deg;
@@ -169,11 +170,11 @@ namespace HelicopterMod.Main.Controllers
             float yawRatio = Mathf.Clamp(Mathf.Abs(yawInDegrees) / rotationSpeeds.y, 0f, 1.5f);
             float rollDueToYaw = yawRatio * rotationSpeeds.z * 3f * dutchRollWeight * Mathf.Sign(yawInDegrees);
             
-            newSumOfAeroDynamicForces.z += rollDueToYaw;
+            newSumOfAeroDynamicFactors.z += rollDueToYaw;
 
             sumOfAerodynamicFactors = Vector3.Lerp(
                 sumOfAerodynamicFactors,
-                newSumOfAeroDynamicForces, 
+                newSumOfAeroDynamicFactors, 
                 4f * Time.fixedDeltaTime
             );
             
