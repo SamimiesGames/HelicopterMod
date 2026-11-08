@@ -10,6 +10,7 @@ namespace HelicopterMod.Main
         {
             
         }
+        
         public virtual void OnUnOccupied()
         {
             

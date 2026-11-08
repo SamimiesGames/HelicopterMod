@@ -1,4 +1,5 @@
 ﻿using HelicopterMod.Main.Controllers;
+using HelicopterMod.Main.Utilities;
 using MelonLoader;
 using Il2Cpp;
 using Il2CppTLD.Interactions;
@@ -48,9 +49,12 @@ namespace HelicopterMod.Main
                 "helicopters", 
                 "VEHICLE_McLeodsUltimatePersonalTransportationMachineA"
             );
-            Transform playerTransform = GameManager.GetPlayerTransform();
             
-            helicopter = GameObject.Instantiate(prefab, playerTransform.position + Vector3.up * 2, playerTransform.rotation);
+            helicopter = GameObject.Instantiate(
+                prefab, 
+                ManagerCache.PlayerTransform.position + Vector3.up * 2,
+                ManagerCache.PlayerTransform.rotation
+            );
             Logger.Msg("Load Helicopter ... OK");
             
             Logger.Msg("Finding objects for rig"); 
@@ -111,7 +115,7 @@ namespace HelicopterMod.Main
             Logger.Msg($"Adding BaseInteraction(enter) ... OK");
             
             Logger.Msg($"IgnoreCollisions");
-            PhysicsHelper.IgnoreCollisions(helicopter, playerTransform.gameObject);
+            PhysicsHelper.IgnoreCollisions(helicopter, ManagerCache.PlayerTransform.gameObject);
             Logger.Msg($"IgnoreCollisions ... OK");
             
             Logger.Msg("COMPLETE"); 
