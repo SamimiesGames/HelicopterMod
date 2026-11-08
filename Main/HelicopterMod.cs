@@ -144,6 +144,11 @@ namespace HelicopterMod.Main
 
             LoadScene loadScene = new GameObject("LoadScene").AddComponent<LoadScene>();
             loadScene.m_SceneToLoad = uConsole.GetString();
+            loadScene.m_Active = true;
+            loadScene.CanInteract = true;
+            loadScene.Awake();
+            loadScene.Start();
+            loadScene.Update();
             loadScene.PerformSceneLoad();
         }
     }
