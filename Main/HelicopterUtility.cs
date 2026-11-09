@@ -18,7 +18,7 @@ namespace HelicopterMod.Main
             _lastPrefabName = prefabName;
             GameObject prefab = AssetBundleUtility.GetPrefab(
                 "helicopters", 
-                prefabName // "VEHICLE_McLeodsUltimatePersonalTransportationMachineA"
+                prefabName
             );
             
             GameObject helicopter = GameObject.Instantiate(

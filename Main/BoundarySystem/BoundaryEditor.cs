@@ -1,7 +1,6 @@
 ﻿using HelicopterMod.Main.Utilities;
 using HelicopterMod.Main.Utilities.Exporter;
 using Il2Cpp;
-using Il2CppHoloville.HOTween.Core.Easing;
 using UnityEngine;
 
 namespace HelicopterMod.Main.BoundarySystem
