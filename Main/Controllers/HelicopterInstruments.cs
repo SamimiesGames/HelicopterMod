@@ -16,8 +16,8 @@ namespace HelicopterMod.Main.Controllers
         {
             liftTachometer.value = helicopterControls.effectiveLift;
             climbRateTachometer.value = Mathf.InverseLerp(
-                    -helicopterControls.climbRate,
-                    helicopterControls.climbRate,
+                    -helicopterControls.flightModel.climbRate,
+                    helicopterControls.flightModel.climbRate,
                     helicopterControls.helicopterRigidbody.velocity.y
             );
             airSpeedTachometer.value = helicopterControls.helicopterRigidbody.velocity.magnitude * 3.6f / 109f;

@@ -9,6 +9,8 @@ namespace HelicopterMod.Main
     public struct HelicopterUtility
     {
         private static Seat _cachedSeat;
+        private static HelicopterControls _cachedControls;
+        private static HelicopterState _cachedState;
         private static string _lastPrefabName;
 
         public static string LastPrefabName => _lastPrefabName;
@@ -56,6 +58,7 @@ namespace HelicopterMod.Main
             
             Logger.Msg($"Adding HelicopterControls");
             HelicopterControls controls = helicopter.AddComponent<HelicopterControls>();
+            _cachedControls = controls;
             controls.seat = seat;
             Logger.Msg($"Adding HelicopterControls ... OK");
             controls.rotorUp = rotor.transform;
@@ -104,6 +107,46 @@ namespace HelicopterMod.Main
             }
             
             _cachedSeat.Enter();
+        }
+        
+        public static void StoreState()
+        {
+            if (!_cachedControls)
+            {
+                Logger.Warning($"[HelicopterUtility] StoreState failed; no cached controls!");
+                return;
+            }
+            
+            Logger.Msg($"[HelicopterUtility] Save state");
+            _cachedState = GetState();
+            Logger.Msg($"[HelicopterUtility] Save state ... OK");
+        }
+
+        public static void RestoreState()
+        {
+            if (_cachedState == null)
+            {
+                Logger.Warning($"[HelicopterUtility] Restore state failed; no cached state!");
+                return;
+            }
+            Logger.Msg($"[HelicopterUtility] Restore state");
+            SetState(_cachedState);
+            Logger.Msg($"[HelicopterUtility] Restore state ... OK");
+        }
+        
+        public static HelicopterState GetState()
+        {
+            return new HelicopterState
+            {
+                controlData = _cachedControls.data,
+                RotorData = _cachedControls.mainRotor.data
+            };
+        }
+
+        public static void SetState(HelicopterState state)
+        {
+            _cachedControls.data = state.controlData;
+            _cachedControls.mainRotor.data = state.RotorData;
         }
     }
 }

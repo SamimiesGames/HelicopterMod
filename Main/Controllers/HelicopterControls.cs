@@ -19,7 +19,7 @@ namespace HelicopterMod.Main.Controllers
         public float groundEffectDistance = 12.7f;
         public float rbsGraceFactor = .25f;
         public float collectiveExponent = 1.5f;
-        public float oppositeDirectionAccelerationReduction = .4f;
+        public float counterFlowAccelerationReduction = .4f;
         public float normalDrag = 0.7f;
         public float etlDrag = 1.4f;
         public float etlVerticalDrag = 2.1f;
@@ -40,6 +40,13 @@ namespace HelicopterMod.Main.Controllers
         public Vector3 groundEffect;
         public Vector3 sumOfAerodynamicFactors;
         public float collective;
+    }
+
+    [Serializable]
+    public class HelicopterState
+    {
+        public HelicopterControlsData controlData;
+        public RotorData RotorData;
     }
     
     [RegisterTypeInIl2Cpp]
@@ -62,7 +69,7 @@ namespace HelicopterMod.Main.Controllers
         public override string ToString()
         {
             return $"HELICOPTER STATE:\n" +
-                   $"RPM: {Mathf.RoundToInt(mainRotor.rpm * 400f)}\n" +
+                   $"RPM: {Mathf.RoundToInt(mainRotor.data.rpm * 400f)}\n" +
                    $"COL: {Mathf.CeilToInt(data.collective * 100f)}\n " +
                    $"SPD: {(helicopterRigidbody.velocity.magnitude * 3.6f).ToString("F1")}km/h\n" +
                    $"CLM: {helicopterRigidbody.velocity.y.ToString("F1")}m/s\n" +
@@ -114,7 +121,7 @@ namespace HelicopterMod.Main.Controllers
             int layerMask = Utils.m_PhysicalCollisionLayerMask;
             layerMask &= ~14; // Remove Player
 
-            float rpmPow2 = Mathf.Pow(mainRotor.rpm, 2f);
+            float rpmPow2 = Mathf.Pow(mainRotor.data.rpm, 2f);
 
             if (rpmPow2 < flightModel.groundEffectRpm) return;
             
@@ -169,7 +176,9 @@ namespace HelicopterMod.Main.Controllers
             float yawInDegrees = Vector3.Dot(helicopterRigidbody.angularVelocity, transform.up) * Mathf.Rad2Deg;
 
             float yawRatio = Mathf.Clamp(Mathf.Abs(yawInDegrees) / flightModel.rotationSpeeds.y, 0f, 1.5f);
-            float rollDueToYaw = yawRatio * flightModel.rotationSpeeds.z * flightModel.rollDueToYawMultiplier * dutchRollWeight * Mathf.Sign(yawInDegrees);
+            float rollDueToYaw = yawRatio * flightModel.rotationSpeeds.z 
+                                          * flightModel.rollDueToYawMultiplier * dutchRollWeight 
+                                          * Mathf.Sign(yawInDegrees);
             
             newSumOfAeroDynamicFactors.z += rollDueToYaw;
 
@@ -252,7 +261,7 @@ namespace HelicopterMod.Main.Controllers
         
         private void _UpdateAcceleration()
         {
-            float rpmPow2 = Mathf.Pow(mainRotor.rpm, 2f);
+            float rpmPow2 = Mathf.Pow(mainRotor.data.rpm, 2f);
             float scaledCollective = Mathf.Pow(data.collective, flightModel.collectiveExponent);
             
             effectiveLift = scaledCollective * rpmPow2;
@@ -272,7 +281,7 @@ namespace HelicopterMod.Main.Controllers
             if (differentDirection)
             {
                 horizontal = forwardRatio * (
-                    flightModel.maximumAcceleration * flightModel.oppositeDirectionAccelerationReduction
+                    flightModel.maximumAcceleration * flightModel.counterFlowAccelerationReduction
                 ) * helicopterRigidbody.transform.forward;
             }
             
@@ -327,6 +336,11 @@ namespace HelicopterMod.Main.Controllers
             torque = (transform.rotation * torque) / Time.fixedDeltaTime;
             
             helicopterRigidbody.AddTorque(torque * Time.fixedDeltaTime, ForceMode.Force);
+        }
+
+        public void OnDisable()
+        {
+            HelicopterUtility.StoreState();
         }
     }
 }
