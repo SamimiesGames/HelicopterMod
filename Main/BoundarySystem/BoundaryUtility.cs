@@ -13,6 +13,7 @@ namespace HelicopterMod.Main.BoundarySystem
             for (int i = 0; i < boundaries.transform.GetChildCount(); i++)
             {
                 GameObject candidate = boundaries.transform.GetChild(i).gameObject;
+                candidate.layer = LayerMask.NameToLayer("Trigger");
                 
                 int index = candidate.name.IndexOf('_');
                 if (index <= -1)
