@@ -11,7 +11,8 @@ namespace HelicopterMod.Main.Patches
         static void Postfix(PlayerManager __instance)
         {
             bool inHelicopter = HelicopterModState.TransitionState == HelicopterModTransitionState.InHelicopter;
-            BoundaryCache.SetActiveBoundaries(GameManager.m_ActiveScene, inHelicopter);
+            BoundaryCache.SetActiveBoundaries(GameManager.m_ActiveScene);
+            BoundaryCache.SetLayerActive(inHelicopter);
 
             bool mainMenu = GameManager.m_ActiveScene == "MainMenu";
             bool hasBoundary = BoundaryCache.ActiveBoundary != null;
@@ -45,6 +46,7 @@ namespace HelicopterMod.Main.Patches
             {
                 Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] In main menu.");
                 HelicopterModState.LastActiveScene = string.Empty;
+                HelicopterModState.TransitionState = HelicopterModTransitionState.OnFoot;
             }
         } 
     }    

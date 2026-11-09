@@ -29,7 +29,7 @@ namespace HelicopterMod.Main
             Logger.Msg($"[Seat] Entered!");
             occupied = true;
             HelicopterModState.TransitionState = HelicopterModTransitionState.InHelicopter;
-            BoundaryCache.ActiveBoundariesGameObject?.SetActive(true);
+            BoundaryCache.SetLayerActive(true);
             
             ManagerCache.PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;
@@ -54,6 +54,8 @@ namespace HelicopterMod.Main
                 Exit();
                 return;
             }
+
+            if (!ManagerCache.PlayerTransform) return;
             
             ManagerCache.PlayerTransform.position = transform.position;
             ManagerCache.PlayerTransform.rotation = transform.rotation;
@@ -64,6 +66,8 @@ namespace HelicopterMod.Main
             Logger.Msg($"[Seat] Exited!");
             occupied = false;
             HelicopterModState.TransitionState = HelicopterModTransitionState.OnFoot;
+            BoundaryCache.SetLayerActive(false);
+
 
             ManagerCache.PlayerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
@@ -78,6 +82,8 @@ namespace HelicopterMod.Main
         private void OnDisable()
         {
             Logger.Msg($"[Seat] OnDisable, cleanup");
+            if (!ManagerCache.PlayerManager) return;
+            
             ManagerCache.PlayerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;
         }

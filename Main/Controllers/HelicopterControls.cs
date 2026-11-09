@@ -58,7 +58,7 @@ namespace HelicopterMod.Main.Controllers
         public Seat seat;
 
         public HelicopterControlsFlightModel flightModel = new();
-        public HelicopterControlsData data = new();
+        public HelicopterControlsData data;
 
         public float pitch;
         public float effectiveLift;
@@ -79,7 +79,11 @@ namespace HelicopterMod.Main.Controllers
                    $"climbRate: {flightModel.climbRate}\n" +
                    $"maximumAcceleration: {flightModel.maximumAcceleration}\n";
         }
-
+        private void Awake()
+        {
+            if (data == null) data = new HelicopterControlsData();
+        }
+        
         private void Start()
         {
             helicopterRigidbody = gameObject.AddComponent<Rigidbody>();

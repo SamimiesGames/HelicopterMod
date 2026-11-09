@@ -15,6 +15,9 @@ namespace HelicopterMod.Main
         
         private void Update()
         {
+            if (!GameManager.m_vpFPSPlayer) return;
+            if (!GameManager.m_vpFPSPlayer.FPSCamera) return;
+            
             GameManager.m_vpFPSPlayer.FPSCamera.enabled = false;
 
             float newYaw = 0f;
@@ -53,6 +56,9 @@ namespace HelicopterMod.Main
         private void OnDisable()
         {
             Logger.Msg($"[PilotFreeLook] OnDisable, cleanup");
+            if (!GameManager.m_vpFPSPlayer) return;
+            if (!GameManager.m_vpFPSPlayer.FPSCamera) return;
+            
             GameManager.m_vpFPSPlayer.FPSCamera.m_Camera.transform.localRotation = Quaternion.Euler(0, 0, 0);
             GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;
         }

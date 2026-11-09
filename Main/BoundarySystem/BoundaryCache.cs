@@ -8,8 +8,6 @@ namespace HelicopterMod.Main.BoundarySystem
     public struct BoundaryCache
     {
         [AllowNull]
-        public static GameObject ActiveBoundariesGameObject => _boundariesGameObject;
-        [AllowNull]
         public static Boundary ActiveBoundary => _boundary;
 
         [AllowNull]
@@ -17,7 +15,7 @@ namespace HelicopterMod.Main.BoundarySystem
         [AllowNull]
         private static Boundary _boundary;
         
-        public static void SetActiveBoundaries(string sceneName, bool setLayerActive)
+        public static void SetActiveBoundaries(string sceneName)
         {
             Logger.Msg($"[BoundaryCache] SetActiveBoundaries for \"{sceneName}\"");
             
@@ -30,11 +28,21 @@ namespace HelicopterMod.Main.BoundarySystem
             }
             
             _boundariesGameObject = GameObject.Instantiate(prefab);
-            _boundariesGameObject.SetActive(setLayerActive);
+            _boundariesGameObject.SetActive(false);
             
             _boundary = BoundaryUtility.Unpack(_boundariesGameObject);
             
             BoundaryUtility.Load(_boundary);
+        }
+
+        public static void SetLayerActive(bool enabled)
+        {
+            Logger.Msg($"[BoundaryCache] SetLayerActive, enabled={enabled}");
+            if (enabled && !_boundariesGameObject)
+            {
+                Logger.Warning($"[BoundaryCache] SetLayerActive will fail; enabled={enabled}, but there are no boundaries.");
+            }
+            _boundariesGameObject?.SetActive(enabled);
         }
     }    
 }

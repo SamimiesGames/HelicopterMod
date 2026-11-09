@@ -16,9 +16,14 @@ namespace HelicopterMod.Main.Controllers
         public float power;
         public float maxAcceleration;
         public float friction;
-        public RotorData data = new();
+        public RotorData data;
 
         private float angle;
+
+        private void Awake()
+        {
+            if (data == null) data = new RotorData();
+        }
 
         private void Update()
         {
