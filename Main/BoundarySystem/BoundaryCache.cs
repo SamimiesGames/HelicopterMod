@@ -9,7 +9,10 @@ namespace HelicopterMod.Main.BoundarySystem
     {
         [AllowNull]
         public static Boundary ActiveBoundary => _boundary;
-
+        
+        [AllowNull] 
+        public static GameObject Boundaries => _boundariesGameObject;
+        
         [AllowNull]
         private static GameObject _boundariesGameObject;
         [AllowNull]
@@ -27,7 +30,7 @@ namespace HelicopterMod.Main.BoundarySystem
                 return;
             }
             
-            _boundariesGameObject = GameObject.Instantiate(prefab);
+            _boundariesGameObject = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
             _boundariesGameObject.SetActive(false);
             
             _boundary = BoundaryUtility.Unpack(_boundariesGameObject);

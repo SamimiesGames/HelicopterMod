@@ -59,6 +59,56 @@ namespace HelicopterMod.Main.BoundarySystem
             }
             Logger.Msg($"[BoundaryEditor] SetExport success; ExportDirectory set to \"{ExportDirectory}\"");
         }
+
+        public static void Show()
+        {
+            if (!BoundaryCache.Boundaries)
+            {
+                Logger.Error($"[BoundaryEditor] Show failed; there is no BoundaryCache.Boundaries!");
+                return;
+            }
+
+            Logger.Msg($"[BoundaryEditor] Show");
+            Boundaries = BoundaryCache.Boundaries;
+
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            MeshFilter cubeMeshFilter = cube.GetComponent<MeshFilter>();
+            MeshRenderer cubeMeshRenderer = cube.GetComponent<MeshRenderer>();
+            int visualized = 0;
+            bool hide = false;
+            
+            foreach (List<GameObject> transitions in BoundaryCache.ActiveBoundary.Transitions.Values)
+            {
+                foreach (GameObject transition in transitions)
+                {
+                    MeshFilter meshFilter = transition.GetComponent<MeshFilter>();
+                    if (meshFilter)
+                    {
+                        hide = true;
+                        GameObject.Destroy(meshFilter);
+                        GameObject.Destroy(transition.GetComponent<MeshRenderer>());
+                        continue;
+                    }
+                    meshFilter = transition.AddComponent<MeshFilter>();
+                    meshFilter.sharedMesh = cubeMeshFilter.sharedMesh;
+                    
+                    MeshRenderer meshRenderer = transition.AddComponent<MeshRenderer>();
+                    meshRenderer.materials = cubeMeshRenderer.materials;
+                    meshRenderer.material = cubeMeshRenderer.material;
+                    visualized++;
+                }
+            }
+            
+            GameObject.Destroy(cube);
+            if (hide)
+            {
+                Logger.Msg($"[BoundaryEditor] Hid {visualized} transitions.");
+            }
+            else
+            {
+                Logger.Msg($"[BoundaryEditor] Shown {visualized} transitions.");
+            }
+        }
         
         public static void Create()
         {
