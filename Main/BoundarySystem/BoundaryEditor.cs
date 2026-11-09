@@ -64,7 +64,7 @@ namespace HelicopterMod.Main.BoundarySystem
         {
             if (!BoundaryCache.Boundaries)
             {
-                Logger.Error($"[BoundaryEditor] Show failed; there is no BoundaryCache.Boundaries!");
+                Logger.Error($"[BoundaryEditor] Show failed; there are no BoundaryCache.Boundaries!");
                 return;
             }
 
@@ -95,18 +95,18 @@ namespace HelicopterMod.Main.BoundarySystem
                     MeshRenderer meshRenderer = transition.AddComponent<MeshRenderer>();
                     meshRenderer.materials = cubeMeshRenderer.materials;
                     meshRenderer.material = cubeMeshRenderer.material;
-                    visualized++;
                 }
             }
             
             GameObject.Destroy(cube);
             if (hide)
             {
-                Logger.Msg($"[BoundaryEditor] Hid {visualized} transitions.");
+                Boundaries = null;
+                Logger.Msg($"[BoundaryEditor] Hid transitions. (Editing cancelled.)");
             }
             else
             {
-                Logger.Msg($"[BoundaryEditor] Shown {visualized} transitions.");
+                Logger.Msg($"[BoundaryEditor] Showing transitions. (You can now edit.)");
             }
         }
         
