@@ -1,0 +1,249 @@
+﻿%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5550748611929416673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5302275559831152855}
+  m_Layer: 21
+  m_Name: "Boundaries_HubRegion"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5302275559831152855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5550748611929416673}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 226481518}
+  - {fileID: 2093192757}
+  - {fileID: -732049302}
+  - {fileID: -751967415}
+  - {fileID: 1565530820}
+  - {fileID: -1680312172}
+  - {fileID: 793167644}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -0, y: 0, z: 0}
+--- !u!1 &5149531966076371066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5521353116919780718}
+  m_Layer: 21
+  m_Name: "AirfieldRegion_boundary"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5521353116919780718
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5149531966076371066}
+  m_LocalRotation: {x: -0, y: -0.7120231, z: -0, w: 0.70215607}
+  m_LocalPosition: {x: -278.34, y: 407.99136, z: 164.07158}
+  m_LocalScale: {x: 500, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: -0, y: 269.2005, z: 0}
+--- !u!1 &4832350675209686097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5455754060345087541}
+  m_Layer: 21
+  m_Name: "AirfieldRegion_boundary"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5455754060345087541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4832350675209686097}
+  m_LocalRotation: {x: -0, y: -0.8102278, z: -0, w: 0.5861152}
+  m_LocalPosition: {x: -275.8272, y: 500.10474, z: -172.71759}
+  m_LocalScale: {x: 100, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: -0, y: 251.76361, z: 0}
+--- !u!1 &5369732443436968521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4614031516515553386}
+  m_Layer: 21
+  m_Name: "MiningRegion_boundary"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4614031516515553386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369732443436968521}
+  m_LocalRotation: {x: -0, y: -0.019551381, z: -0, w: 0.9998089}
+  m_LocalPosition: {x: 235.24086, y: 359.37888, z: 786.3986}
+  m_LocalScale: {x: 1000, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: -0, y: 357.75943, z: 0}
+--- !u!1 &4819607094048036510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5385601075299345225}
+  m_Layer: 21
+  m_Name: "LongRailTransitionZone_boundary"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5385601075299345225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4819607094048036510}
+  m_LocalRotation: {x: -0, y: 0.9992032, z: -0, w: 0.03991174}
+  m_LocalPosition: {x: 181.9585, y: 331.4441, z: -411.0081}
+  m_LocalScale: {x: 1000, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: -0, y: 175.42525, z: -0}
+--- !u!1 &5257499344218186482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5503940839804508868}
+  m_Layer: 0
+  m_Name: "LongRailTransitionZone_exitPoint"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5503940839804508868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257499344218186482}
+  m_LocalRotation: {x: -0, y: -0.035125107, z: -0, w: 0.999383}
+  m_LocalPosition: {x: 174.64192, y: 359.51987, z: -359.04916}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: -0, y: 355.97412, z: 0}
+--- !u!1 &5196618725769917956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5451459003376236692}
+  m_Layer: 0
+  m_Name: "AirfieldRegion_exitPoint"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5451459003376236692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196618725769917956}
+  m_LocalRotation: {x: -0, y: 0.65736485, z: -0, w: 0.75357246}
+  m_LocalPosition: {x: -195.9581, y: 417.21255, z: 155.76492}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: -0, y: 82.19842, z: -0}
+--- !u!1 &4740313217016847169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4896148931664594716}
+  m_Layer: 0
+  m_Name: "MiningRegion_exitPoint"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4896148931664594716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740313217016847169}
+  m_LocalRotation: {x: -0, y: 0.99651706, z: -0, w: -0.08338915}
+  m_LocalPosition: {x: 254.4661, y: 372.60403, z: 742.3822}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5302275559831152855}
+  m_LocalEulerAnglesHint: {x: 0, y: 189.5668, z: 0}

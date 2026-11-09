@@ -1,16 +1,16 @@
 ManifestFileVersion: 0
 UnityVersion: 6000.0.60f1
-CRC: 2734946835
+CRC: 4250683141
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 124a18492bcb4978b330331cb8894005
+    Hash: 77cfa1cf8e5e35798b777c3839a43589
   TypeTreeHash:
     serializedVersion: 2
     Hash: 02891d9e88e5268131f274408ebabf71
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: d9bef3bcf64c22bf43ac6046d6937d4b
+    Hash: 46246939c57869157eeb6cce625e60fb
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,5 +31,9 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/HelicopterMod/Prefabs/Generated/Boundaries_MiningRegion.prefab
+- Assets/HelicopterMod/Prefabs/Generated/Boundaries_HubRegion.prefab
 - Assets/HelicopterMod/Prefabs/VEHICLE_McLeodsUltimatePersonalTransportationMachineA.prefab
+- Assets/HelicopterMod/Prefabs/Generated/Boundaries_LongRailTransitionZone.prefab
+- Assets/HelicopterMod/Prefabs/Generated/Boundaries_AirfieldRegion.prefab
 Dependencies: []

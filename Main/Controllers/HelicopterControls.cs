@@ -288,7 +288,13 @@ namespace HelicopterMod.Main.Controllers
             }
 
             bool inTransverseFlow = helicopterRigidbody.velocity.magnitude * 3.6f < transverseFlow;
-            helicopterRigidbody.linearDamping = inTransverseFlow ? 1.4f : 0.7f;
+            helicopterRigidbody.linearDamping = 0.7f;
+
+            if (inTransverseFlow)
+            {
+                helicopterRigidbody.linearDamping = 1.4f;
+                vertical *= 1f - 2.1f * Time.fixedDeltaTime;
+            }
             
             Vector3 velocity = vertical + horizontalVelocity;
             Vector3 force = velocity * helicopterRigidbody.mass;

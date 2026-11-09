@@ -22,14 +22,12 @@ namespace HelicopterMod.Main
         
         public static void Warning(string message)
         {
-            Debug.Log(message);
             uConsole.Log(message);
             Melon<HelicopterMod>.Logger.Warning(message);
         }
         
         public static void Error(string message)
         {
-            Debug.Log(message);
             uConsole.Log(message);
             Melon<HelicopterMod>.Logger.Error(message);
         }

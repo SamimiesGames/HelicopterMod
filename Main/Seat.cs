@@ -1,4 +1,5 @@
-﻿using HelicopterMod.Main.Utilities;
+﻿using HelicopterMod.Main.BoundarySystem;
+using HelicopterMod.Main.Utilities;
 using Il2Cpp;
 using MelonLoader;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace HelicopterMod.Main
             Logger.Msg($"[Seat] Entered!");
             occupied = true;
             HelicopterModState.TransitionState = HelicopterModTransitionState.InHelicopter;
+            BoundaryCache.ActiveBoundariesGameObject?.SetActive(true);
             
             ManagerCache.PlayerManager.SetControlMode(PlayerControlMode.InVehicle);
             GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = false;

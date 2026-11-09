@@ -1,0 +1,225 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4717323543393374027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5061221938900310104}
+  m_Layer: 21
+  m_Name: Boundaries_LongRailTransitionZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5061221938900310104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4717323543393374027}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4761217945041839899}
+  - {fileID: 4798941927864284080}
+  - {fileID: 4878636447834406208}
+  - {fileID: 5042102248252468059}
+  - {fileID: 5512698614962980790}
+  - {fileID: 5538458874184409231}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -0, y: 0, z: 0}
+--- !u!1 &4784007270512978259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5538458874184409231}
+  m_Layer: 0
+  m_Name: HubRegion_exitPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5538458874184409231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4784007270512978259}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.93208224, z: -0, w: -0.3622469}
+  m_LocalPosition: {x: 101.07738, y: 59.934875, z: 881.94305}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5061221938900310104}
+  m_LocalEulerAnglesHint: {x: 0, y: 222.4765, z: 0}
+--- !u!1 &4869357867347596820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4761217945041839899}
+  m_Layer: 21
+  m_Name: TracksRegion_boundary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4761217945041839899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869357867347596820}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.92484933, z: -0, w: 0.38033372}
+  m_LocalPosition: {x: 217.43918, y: 92.564926, z: -10.737686}
+  m_LocalScale: {x: 500, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5061221938900310104}
+  m_LocalEulerAnglesHint: {x: -0, y: 135.29129, z: -0}
+--- !u!1 &5297045196277135916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4798941927864284080}
+  m_Layer: 21
+  m_Name: TracksRegion_boundary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4798941927864284080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5297045196277135916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.99090856, z: -0, w: 0.13453723}
+  m_LocalPosition: {x: 1.5815525, y: 70.76336, z: -142.39705}
+  m_LocalScale: {x: 150, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5061221938900310104}
+  m_LocalEulerAnglesHint: {x: -0, y: 164.53629, z: -0}
+--- !u!1 &5414591626753209892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4878636447834406208}
+  m_Layer: 0
+  m_Name: TracksRegion_exitPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4878636447834406208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414591626753209892}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.01122031, z: -0, w: 0.99993706}
+  m_LocalPosition: {x: -41.354313, y: 57.942413, z: -68.35968}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5061221938900310104}
+  m_LocalEulerAnglesHint: {x: -0, y: 1.2857798, z: -0}
+--- !u!1 &5458145938587083072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5512698614962980790}
+  m_Layer: 21
+  m_Name: HubRegion_boundary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5512698614962980790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5458145938587083072}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.10092021, z: -0, w: 0.99489456}
+  m_LocalPosition: {x: 93.93419, y: 64.43207, z: 937.9098}
+  m_LocalScale: {x: 1000, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5061221938900310104}
+  m_LocalEulerAnglesHint: {x: -0, y: 11.584325, z: -0}
+--- !u!1 &5511191268763954200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5042102248252468059}
+  m_Layer: 21
+  m_Name: TracksRegion_boundary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5042102248252468059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5511191268763954200}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.96311975, z: -0, w: -0.26907307}
+  m_LocalPosition: {x: -161.31238, y: 83.89205, z: -108.61543}
+  m_LocalScale: {x: 150, y: 1000, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5061221938900310104}
+  m_LocalEulerAnglesHint: {x: 0, y: 211.21823, z: 0}

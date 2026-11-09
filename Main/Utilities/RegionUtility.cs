@@ -29,5 +29,20 @@ namespace HelicopterMod.Main.Utilities
             loadScene.transform.localPosition = Vector3.zero;
             loadScene.transform.localRotation = Quaternion.identity;
         }
+
+        public static void AttachLoadScene(GameObject to, string sceneName)
+        {
+            // The collider needs to be added first, otherwise LoadScene cannot find it.
+            BoxCollider collider = to.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+            
+            // Setup LoadScene.
+            LoadScene loadScene = to.AddComponent<LoadScene>();
+            loadScene.m_SceneToLoad = sceneName; // Scene to travel to.
+            loadScene.m_ExitPointName = "DefaultSpawnPoint"; // Fallback spawn point that is in all regions.
+            loadScene.m_Active = true;
+            loadScene.m_TransitionOnContact = true;
+            loadScene.CanInteract = true;
+        }
     }    
 }

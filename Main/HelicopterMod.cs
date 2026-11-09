@@ -1,4 +1,5 @@
-﻿using HelicopterMod.Main.Controllers;
+﻿using HelicopterMod.Main.BoundarySystem;
+using HelicopterMod.Main.Controllers;
 using HelicopterMod.Main.Utilities;
 using MelonLoader;
 using Il2Cpp;
@@ -12,129 +13,48 @@ namespace HelicopterMod.Main
 {
     public class HelicopterMod : MelonMod
     {
-        public GameObject helicopter;
-        public GameObject enterInteraction;
-        public Seat seat;
+        public static HelicopterMod Instance { get; private set; }
+        public GameObject currentHelicopter;
         
         public override void OnInitializeMelon()
         {
             base.OnInitializeMelon();
+            Instance = this;
             
             Logger.Msg("HelicopterMod loading!"); 
             AssetBundleUtility.LoadBundle("helicopters", "Mods/helicoptermodassets");
             
             uConsole.RegisterCommand("spawn_helicopter", new Action(SpawnHelicopter));
             uConsole.RegisterCommand("unstuck_heli", new Action(UnstuckHelicopter));
-            uConsole.RegisterCommand("getout", new Action(GetOutOfHelicopter));
             uConsole.RegisterCommand("switch_scene", new Action(SwitchScene));
+            
+            uConsole.RegisterCommand("BE.Start", new Action(BoundaryEditor.Start));
+            uConsole.RegisterCommand("BE.Export", new Action(BoundaryEditor.Export));
+            uConsole.RegisterCommand("BE.SetExport", new Action(BoundaryEditor.SetExport));
+            uConsole.RegisterCommand("BE.Create", new Action(BoundaryEditor.Create));
+            uConsole.RegisterCommand("BE.Place", new Action(BoundaryEditor.Place));
+            uConsole.RegisterCommand("BE.SetExit", new Action(BoundaryEditor.ExitPoint));
         }
 
         public void UnstuckHelicopter()
         {
-            if (!helicopter)
+            if (!currentHelicopter)
             {
                 Logger.Warning($"No helicopter available!");
                 return;
             }
             
-            helicopter.transform.rotation = Quaternion.identity;
-            helicopter.transform.position += Vector3.up * 4f;
+            currentHelicopter.transform.rotation = Quaternion.identity;
+            currentHelicopter.transform.position += Vector3.up * 4f;
         }
 
         public void SpawnHelicopter()
         {
             Logger.Msg("Load Helicopter");
-            
-            GameObject prefab = AssetBundleUtility.GetPrefab(
-                "helicopters", 
-                "VEHICLE_McLeodsUltimatePersonalTransportationMachineA"
-            );
-            
-            helicopter = GameObject.Instantiate(
-                prefab, 
-                ManagerCache.PlayerTransform.position + Vector3.up * 2,
-                ManagerCache.PlayerTransform.rotation
-            );
-            Logger.Msg("Load Helicopter ... OK");
-            
-            Logger.Msg("Finding objects for rig"); 
-            GameObject seat0 = helicopter.transform.Find("seat0").gameObject;
-            Logger.Msg($"seat0={seat0}");
-            GameObject rotor = helicopter.transform.Find("rotor0").gameObject;
-            Logger.Msg($"rotor0={rotor}");
-            GameObject tachometer0 = helicopter.transform.Find("tachometer0").gameObject;
-            Logger.Msg($"tachometer0={tachometer0}");
-            GameObject tachometer1 = helicopter.transform.Find("tachometer1").gameObject;
-            Logger.Msg($"tachometer1={tachometer1}");
-            GameObject tachometer2 = helicopter.transform.Find("tachometer2").gameObject;
-            Logger.Msg($"tachometer2={tachometer2}");
-            enterInteraction = helicopter.transform.Find("interaction_enter").gameObject;
-            Logger.Msg($"enterInteraction={enterInteraction}");
-            Logger.Msg("Finding objects for rig ... OK"); 
-            
-            Logger.Msg($"Adding Seat");
-            seat = seat0.AddComponent<Seat>();
-            seat.SeatingComponents = new List<SeatingAction>();
-            Logger.Msg($"Adding Seat ... OK");
-            Logger.Msg($"Adding PilotFreeLook");
-            PilotFreeLook freeLook = seat0.AddComponent<PilotFreeLook>();
-            freeLook.enabled = false;
-            seat.SeatingComponents.Add(freeLook);
-            Logger.Msg($"Adding PilotFreeLook ... OK");
-            
-            Logger.Msg($"Adding HelicopterControls");
-            HelicopterControls controls = helicopter.AddComponent<HelicopterControls>();
-            controls.seat = seat;
-            Logger.Msg($"Adding HelicopterControls ... OK");
-            controls.rotorUp = rotor.transform;
-            
-            Logger.Msg($"Adding Rotor");
-            Rotor mainRotor = rotor.AddComponent<Rotor>();
-            mainRotor.friction = .08f;
-            mainRotor.maxAcceleration = 0.5f;
-            
-            controls.mainRotor = mainRotor;
-            Logger.Msg($"Adding Rotor ... OK");
-            
-            Logger.Msg($"Adding Instruments");
-            HelicopterInstruments instruments = helicopter.AddComponent<HelicopterInstruments>();
-            instruments.helicopterControls = controls;
-            instruments.liftTachometer = tachometer0.AddComponent<Tachometer>();
-            instruments.climbRateTachometer = tachometer1.AddComponent<Tachometer>();
-            instruments.airSpeedTachometer = tachometer2.AddComponent<Tachometer>();
-            Logger.Msg($"Adding Instruments ... OK");
-            
-            Logger.Msg($"Adding BaseInteraction(enter)");
-            
-            SimpleInteraction interaction = enterInteraction.AddComponent<SimpleInteraction>();
-            interaction.HoverText = "McLeod's Ultimate Personal Transportation Machine";
-            interaction.AddEventCallback(InteractionEventType.PerformInteraction, (UnityAction<BaseInteraction>)new Action<BaseInteraction>(_ => seat.Enter()));
-            
-            enterInteraction.layer = LayerMask.NameToLayer("InteractivePropNoCollidePlayer");
-            
-            Logger.Msg($"Adding BaseInteraction(enter) ... OK");
-            
-            Logger.Msg($"IgnoreCollisions");
-            PhysicsHelper.IgnoreCollisions(helicopter, ManagerCache.PlayerTransform.gameObject);
-            Logger.Msg($"IgnoreCollisions ... OK");
-            
-            Logger.Msg("COMPLETE"); 
-        }
 
-        public void GetOutOfHelicopter()
-        {
-            if (!helicopter)
-            {
-                Logger.Warning("No helicopter!");
-                return;
-            }
-            
-            Logger.Msg($"GetOutOfHelicopter");
-            seat.Exit();
-            Logger.Msg($"GetOutOfHelicopter ... OK");
+            currentHelicopter = HelicopterUtility.LoadHelicopter("VEHICLE_McLeodsUltimatePersonalTransportationMachineA");
         }
         
-
         public void SwitchScene()
         {
             if (uConsole.GetNumParameters() <= 0)
@@ -152,6 +72,7 @@ namespace HelicopterMod.Main
     public static class HelicopterModState
     {
         public static HelicopterModTransitionState TransitionState;
+        public static string LastActiveScene;
     }
 
     public enum HelicopterModTransitionState
