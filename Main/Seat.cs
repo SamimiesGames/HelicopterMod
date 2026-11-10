@@ -74,15 +74,35 @@ namespace HelicopterMod.Main
             
             foreach (var seatingAction in SeatingComponents)
             {
-                Logger.Msg($"[Seat] seatingAction={seatingAction.name}.OnUnOccupied");
+                seatingAction.OnUnOccupied();
+            }
+        }
+
+        public void ForceExitDueToTransition()
+        {
+            Logger.Msg($"[Seat] ForceExitDueToTransition!");
+            occupied = false;
+            BoundaryCache.SetLayerActive(false);
+            
+            GameManager.m_vpFPSPlayer.Controller.m_Controller.enabled = true;
+            
+            foreach (var seatingAction in SeatingComponents)
+            {
                 seatingAction.OnUnOccupied();
             }
         }
         
         private void OnDisable()
         {
-            Logger.Msg($"[Seat] OnDisable, cleanup");
+            Logger.Msg($"[Seat] OnDisable, attempting cleanup");
             if (!ManagerCache.PlayerManager) return;
+            Logger.Msg($"[Seat] OnDisable, PlayerManager exists; continuing with cleanup.");
+
+            if (HelicopterModState.TransitionState == HelicopterModTransitionState.InHelicopter)
+            {
+                Logger.Msg($"[Seat] OnDisable, player in helicopter. Skipping.");
+                return;
+            }
             
             ManagerCache.PlayerManager.SetControlMode(PlayerControlMode.Normal);
             GameManager.m_vpFPSPlayer.FPSCamera.enabled = true;

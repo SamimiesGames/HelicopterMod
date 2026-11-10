@@ -9,6 +9,7 @@ namespace HelicopterMod.Main.BoundarySystem
         public static Boundary Unpack(GameObject boundaries)
         {
             Boundary boundary = new Boundary();
+            int boundariesCounter = 0;
             
             for (int i = 0; i < boundaries.transform.GetChildCount(); i++)
             {
@@ -18,16 +19,16 @@ namespace HelicopterMod.Main.BoundarySystem
                 int index = candidate.name.IndexOf('_');
                 if (index <= -1)
                 {
-                    Logger.Error($"[Boundaries] CreateLoadingZones warning; {candidate.name} is incorrectly formatted!");
+                    Logger.Error($"[Boundaries] Unpack error; {candidate.name} is incorrectly formatted!");
                     continue;
                 } 
                 
                 string type = candidate.name.Substring(index + 1, candidate.name.Length - (index + 1));
                 string region = candidate.name.Substring(0, index);
                 
-                Logger.Msg($"[Boundaries] CreateLoadingZones, {candidate.name} (type={type}, scene={region})");
                 if (type == "boundary")
                 {
+                    boundariesCounter++;
                     if (boundary.Transitions.ContainsKey(region))
                     {
                         boundary.Transitions[region].Add(candidate);
@@ -44,6 +45,11 @@ namespace HelicopterMod.Main.BoundarySystem
                 }
             }
 
+            Logger.Msg(
+                $"[Boundaries] Unpacked transitions for {boundary.Transitions.Keys.Count} region(s) " +
+                $"with {boundariesCounter} LoadScene triggers. " +
+                $"{boundary.ExitPoints.Count} exit points detected."
+            );
             return boundary;
         }
 
@@ -53,9 +59,7 @@ namespace HelicopterMod.Main.BoundarySystem
             {
                 foreach (GameObject candidate in boundary.Transitions[region])
                 {
-                    Logger.Msg($"[Boundaries] CreateLoadingZones, RegionUtility.AttachLoadScene");
                     RegionUtility.AttachLoadScene(candidate, region);
-                    Logger.Msg($"[Boundaries] CreateLoadingZones, RegionUtility.AttachLoadScene ... OK");
                 }
             }
         }

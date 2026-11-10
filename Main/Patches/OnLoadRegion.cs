@@ -14,7 +14,6 @@ namespace HelicopterMod.Main.Patches
             bool inHelicopter = HelicopterModState.TransitionState == HelicopterModTransitionState.InHelicopter;
             
             BoundaryCache.SetActiveBoundaries(GameManager.m_ActiveScene);
-            BoundaryCache.SetLayerActive(inHelicopter);
 
             bool mainMenu = GameManager.m_ActiveScene == "MainMenu";
             bool hasBoundary = BoundaryCache.ActiveBoundary != null;
@@ -24,22 +23,23 @@ namespace HelicopterMod.Main.Patches
             {
                 if (!BoundaryCache.ActiveBoundary.ExitPoints.ContainsKey(HelicopterModState.LastActiveScene))
                 {
-                    Logger.Warning($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] No exit points!");
+                    Logger.Warning($"[TeleportPlayerAfterSceneLoad] No exit points!");
                     return;
                 }
-
+                
                 if (!HelicopterMod.Instance.currentHelicopter)
                 {
                     if (ManagerCache.PlayerManager)
                     {
-                        Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] PlayerManager.ControlMode={ManagerCache.PlayerManager.GetControlMode()}");
+                        Logger.Msg($"[TeleportPlayerAfterSceneLoad] PlayerManager.ControlMode={ManagerCache.PlayerManager.GetControlMode()}");
+                        Logger.Msg($"[TeleportPlayerAfterSceneLoad] __instance.ControlMode={__instance.GetControlMode()}");
                     }
                     else
                     {
-                        Logger.Error($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] No PlayerManager!");
+                        Logger.Error($"[TeleportPlayerAfterSceneLoad] No PlayerManager!");
                     }
                     
-                    Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] Stale helicopter reference! Loading a new one.");
+                    Logger.Msg($"[TeleportPlayerAfterSceneLoad] Stale helicopter reference! Loading a new one.");
                     HelicopterMod.Instance.currentHelicopter = HelicopterUtility.LoadHelicopter(HelicopterUtility.LastPrefabName);
                     
                     HelicopterUtility.EnterHelicopter();
@@ -51,14 +51,14 @@ namespace HelicopterMod.Main.Patches
                 HelicopterMod.Instance.currentHelicopter.transform.position = exitPoint.position;
                 HelicopterMod.Instance.currentHelicopter.transform.rotation = exitPoint.rotation;
                 
-                Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] Teleported helicopter to {exitPoint.name}");
+                Logger.Msg($"[TeleportPlayerAfterSceneLoad] Teleported helicopter to {exitPoint.name}");
             }
 
             HelicopterModState.LastActiveScene = GameManager.m_ActiveScene;
 
             if (mainMenu)
             {
-                Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] In main menu.");
+                Logger.Msg($"[TeleportPlayerAfterSceneLoad] In main menu.");
                 HelicopterModState.LastActiveScene = string.Empty;
                 HelicopterModState.TransitionState = HelicopterModTransitionState.OnFoot;
             }
