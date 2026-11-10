@@ -34,7 +34,7 @@ namespace HelicopterMod.Main
             uConsole.RegisterCommand("BE.Create", new Action(BoundaryEditor.Create));
             uConsole.RegisterCommand("BE.Place", new Action(BoundaryEditor.Place));
             uConsole.RegisterCommand("BE.SetExit", new Action(BoundaryEditor.ExitPoint));
-            uConsole.RegisterCommand("BE.Show", new Action(BoundaryEditor.Show));
+            uConsole.RegisterCommand("BE.Edit", new Action(BoundaryEditor.Edit));
         }
 
         public void UnstuckHelicopter()

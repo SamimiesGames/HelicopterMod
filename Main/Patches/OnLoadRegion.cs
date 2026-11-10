@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using HelicopterMod.Main.BoundarySystem;
+using HelicopterMod.Main.Utilities;
 using Il2Cpp;
 using UnityEngine;
 
@@ -28,6 +29,14 @@ namespace HelicopterMod.Main.Patches
 
                 if (!HelicopterMod.Instance.currentHelicopter)
                 {
+                    if (ManagerCache.PlayerManager)
+                    {
+                        Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] PlayerManager.ControlMode={ManagerCache.PlayerManager.GetControlMode()}");
+                    }
+                    else
+                    {
+                        Logger.Error($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] No PlayerManager!");
+                    }
                     Logger.Msg($"[HarmonyPatch::PlayerManager.TeleportPlayerAfterSceneLoad] Stale helicopter reference! Loading a new one.");
                     HelicopterMod.Instance.currentHelicopter = HelicopterUtility.LoadHelicopter(HelicopterUtility.LastPrefabName);
                     HelicopterUtility.EnterHelicopter();

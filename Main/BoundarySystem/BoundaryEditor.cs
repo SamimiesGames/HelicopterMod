@@ -60,21 +60,20 @@ namespace HelicopterMod.Main.BoundarySystem
             Logger.Msg($"[BoundaryEditor] SetExport success; ExportDirectory set to \"{ExportDirectory}\"");
         }
 
-        public static void Show()
+        public static void Edit()
         {
             if (!BoundaryCache.Boundaries)
             {
-                Logger.Error($"[BoundaryEditor] Show failed; there are no BoundaryCache.Boundaries!");
+                Logger.Error($"[BoundaryEditor] Edit failed; there are no Boundaries in this scene!");
                 return;
             }
 
-            Logger.Msg($"[BoundaryEditor] Show");
+            Logger.Msg($"[BoundaryEditor] Edit");
             Boundaries = BoundaryCache.Boundaries;
 
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             MeshFilter cubeMeshFilter = cube.GetComponent<MeshFilter>();
             MeshRenderer cubeMeshRenderer = cube.GetComponent<MeshRenderer>();
-            int visualized = 0;
             bool hide = false;
             
             foreach (List<GameObject> transitions in BoundaryCache.ActiveBoundary.Transitions.Values)
